@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const plugin = require('tailwindcss/plugin')
 module.exports = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -57,7 +58,22 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [
+    require('@tailwindcss/typography'),
+    plugin(function ({ addUtilities }) {
+      const newUtilities = {
+        '.body1': {
+          fontFamily: 'Inter',
+          fontSize: '30px',
+        },
+        '.skew-15deg': {
+          transform: 'skewY(-15deg)',
+        },
+      }
+
+      addUtilities(newUtilities)
+    }),
+  ],
 }
 
 //https://v1.tailwindcss.com/docs/plugins#adding-utilities 사용하여 유틸리티 플러그인 추가하기

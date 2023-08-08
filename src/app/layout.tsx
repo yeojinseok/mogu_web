@@ -15,11 +15,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <div className="min-w-375 max-w-full  h-screen overflow-hidden">
+      <body>
+        <div className="min-w-375 max-w-full  h-screen">
           <div className=" w-full h-full px-10 ">
             <div
-              className="w-full  h-full max-w-1520 "
+              className="w-full  h-full max-w-1520"
               style={{ margin: '0 auto' }}
             >
               {children}
