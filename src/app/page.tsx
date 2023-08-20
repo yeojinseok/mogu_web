@@ -1,30 +1,15 @@
 'use client'
 import React from 'react'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
+import tw from 'twin.macro'
+
 export default function Home() {
   return (
     <>
-      <Tabs>
-        <TabList>
-          <Tab>Title 1</Tab>
-          <Tab>Title 2</Tab>
-          <Tab>Title 2</Tab>
-          <Tab>Title 2</Tab>
-        </TabList>
-
-        <TabPanel>
-          <h2>Any content 1</h2>
-        </TabPanel>
-        <TabPanel>
-          <h2>Any content 2</h2>
-        </TabPanel>
-        <TabPanel>
-          <h2>Any content 3</h2>
-        </TabPanel>
-        <TabPanel>
-          <h2>Any content 4</h2>
-        </TabPanel>
-      </Tabs>
+      <div css={tw`title_screen`} className="bg-black ">
+        안녕하세요 테스트입니다아아아아 enafsdf husic
+      </div>
+      <div css={tw`[font-size: large]`}>슈이트</div>
     </>
   )
 }

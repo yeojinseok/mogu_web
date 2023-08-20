@@ -1,79 +1,70 @@
+const plugins = require('tailwindcss/plugin')
+
 /** @type {import('tailwindcss').Config} */
-const plugin = require('tailwindcss/plugin')
 module.exports = {
-  content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
+  content: ['./src/**/*.{html,js}'],
   theme: {
-    extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-      },
-    },
-    screens: {
-      mobile: '330px',
-      small_devices: '600px',
-      medium_devices: '768px',
-      large_devices: '992px',
-      // => @media (min-width: 640px) { ... }
-
-      laptop: '1124px',
-      // => @media (min-width: 1024px) { ... }
-
-      desktop_middle: '1280px',
-      // => @media (min-width: 1280px) { ... }
-      desktop_full: '1640px',
-    },
-    minWidth: {
-      200: '200px',
-      375: '375px',
-    },
-    maxWidth: {
-      200: '200px',
-      250: '250px',
-      300: '300px',
-      350: '350px',
-      400: '400px',
-      500: '500px',
-      1520: '1520px',
-    },
-    minHeight: {
-      250: '250px',
-    },
-    colors: {
-      green: {
-        100: '#d3f9cd',
-        200: '',
-        300: '',
-        400: '',
-        500: '',
-        600: '',
-        700: '',
-        800: '',
-        900: '',
-      },
-    },
+    extend: {},
   },
-  plugins: [
-    require('@tailwindcss/typography'),
-    plugin(function ({ addUtilities }) {
-      const newUtilities = {
-        '.body1': {
-          fontFamily: 'Inter',
-          fontSize: '30px',
-        },
-        '.skew-15deg': {
-          transform: 'skewY(-15deg)',
-        },
-      }
+  screens: {
+    mobile: '360px', // @media (min-width: 360px)
+    foldable: '523px', // @media (min-width: 523px)
+    tablet: '768px', // @media (min-width: 768px)
+    'under-foldable': { max: '522px' }, // @media (max-width: 522px)
+    'under-tablet': { max: '767px' }, // @media (max-width: 767px)
+    'under-mobile': { max: '359px' }, // @media (max-width: 359px)
+  },
 
-      addUtilities(newUtilities)
-    }),
+  colors: {
+    lime: {
+      50: '#D3F9CD',
+      100: '#C0F6B6',
+      200: '#98F089',
+      300: '#70EB5C',
+      400: '#49E52E',
+      500: '#32C819',
+      600: '#279A13',
+      700: '#1B6D0E',
+      800: '#103F08',
+      900: '#092204',
+    },
+    orange: {
+      50: '#FEFAF5',
+      100: '#FEF8F0',
+      200: '#FCE0C0',
+      300: '#F9C990',
+      400: '#F7B15F',
+      500: '#F4992F',
+      600: '#E4800C',
+      700: '#B36509',
+      800: '#834A07',
+      900: '#522E04',
+    },
+    lime: {
+      50: '#EBEBEB',
+      100: '#DEDEDE',
+      200: '#C4C4C4',
+      300: '#ABABAB',
+      400: '#919191',
+      500: '#787878',
+      600: '#5E5E5E',
+      700: '#454545',
+      800: '#2B2B2B',
+      900: '#121212',
+    },
+    focus_green: '#2CAE21',
+    bright_blue: '#53A1E9',
+    dark_navy: '#0E0736',
+    bright_orange: '#F5A547',
+    burgundy: '#521414',
+    bright_purple: '#7335F7',
+    deep_purple: '#1C115D',
+    bright_lemon: '#ECDF6A',
+    bronze: '#4F350F',
+  },
+
+  plugins: [
+    require('./tailwind-plugins/scrollbar-hide'),
+    require('./tailwind-plugins/font-variants'),
   ],
 }
-
-//https://v1.tailwindcss.com/docs/plugins#adding-utilities 사용하여 유틸리티 플러그인 추가하기
