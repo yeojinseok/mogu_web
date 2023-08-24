@@ -15,8 +15,10 @@
   unicode-range: U+AC00-D7A3, U+0030-0039; /* 한글, 숫자 */
 }
 
+html,
 body {
   font-family: 'inter', 'suit';
+  height: 100%;
 }
 
 /* :root {
