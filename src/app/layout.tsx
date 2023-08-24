@@ -20,7 +20,7 @@ export default function RootLayout({
         <link href="/dist/output.css" rel="stylesheet" />
       </head>
       <body className="flex items-center justify-center h-full bg-grey-900">
-        <div className="flex-auto w-full h-full overflow-hidden max-w-screen-tablet bg-grey-50">
+        <div className="flex-auto w-full h-full overflow-hidden bg-white max-w-screen-tablet">
           <StyledComponentsRegistry>
             <GlobalStyles />
 
