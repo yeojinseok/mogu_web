@@ -54,6 +54,7 @@ module.exports = {
       deep_purple: '#1C115D',
       bright_lemon: '#ECDF6A',
       bronze: '#4F350F',
+      white: '#ffffff',
     },
     extend: {},
     screens: {
