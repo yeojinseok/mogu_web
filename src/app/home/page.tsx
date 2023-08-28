@@ -1,13 +1,18 @@
 import Header from '@/components/home/Header'
-import Container from '@/components/layout/Container'
+
+import { getServerSession } from 'next-auth'
+import { getSession } from 'next-auth/react'
 import React from 'react'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import tw from 'twin.macro'
+import { authOptions } from '../api/auth/[...nextauth]/route'
+import Test from '@/components/home/Test'
+import AuthContext from '@/context/AuthContext'
 
-export default function Home() {
+export default async function Home() {
   return (
-    <Container>
+    <div className="container">
       <Header />
-    </Container>
+    </div>
   )
 }
