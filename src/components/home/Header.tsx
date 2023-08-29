@@ -1,4 +1,5 @@
 'use client'
+import { axiosInstance } from '@/axios/axiosInstance'
 import { getSession, signIn, useSession } from 'next-auth/react'
 
 /**
@@ -6,7 +7,7 @@ import { getSession, signIn, useSession } from 'next-auth/react'
  */
 export default function Header() {
   const use = useSession()
-  console.log(use, '???')
+
   return (
     <>
       <div
@@ -32,7 +33,7 @@ export default function Header() {
       <button
         onClick={async () => {
           const data = await getSession()
-          console.log(data)
+          axiosInstance.get('/shops').then(v => console.log(v.data))
         }}
       >
         asdfsdf

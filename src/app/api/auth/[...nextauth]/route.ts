@@ -1,16 +1,20 @@
 import { axiosInstance } from '@/axios/axiosInstance'
+import axios from 'axios'
 import NextAuth from 'next-auth'
 import type { AuthOptions } from 'next-auth'
 import { JWT } from 'next-auth/jwt'
+import jwt_decode from 'jwt-decode'
 
 import CredentialsProvider from 'next-auth/providers/credentials'
+import { getAccessToken } from '@/utils/getRefreshToken'
+
+const REFRESH_THRESHOLD = 600 // access token 만료 시간을 얼마나 남겨둘지 결정하는 값(단위: 초)
 
 export const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async session({ session, token, user }) {
       if (token) {
-        console.log('token', token)
         //@ts-ignore
         session.accessToken = token.accessToken
         //@ts-ignore
@@ -18,7 +22,7 @@ export const authOptions: AuthOptions = {
         //@ts-ignore
         session.id = token.id
       }
-      console.log('session', session)
+
       return session
     },
     async jwt({ token, user }) {
@@ -29,6 +33,18 @@ export const authOptions: AuthOptions = {
         token.refreshToken = user.refreshToken
         token.id = user.id
       }
+
+      const now = Date.now() / 1000
+
+      //@ts-ignore
+      const expirationTime = jwt_decode(token?.accessToken as string).exp
+
+      if (expirationTime - now < REFRESH_THRESHOLD) {
+        //@ts-ignore
+        const accessToken = await getAccessToken(token?.refreshToken as string)
+        token.accessToken = accessToken
+      }
+
       return token
     },
   },
