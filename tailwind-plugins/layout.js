@@ -9,11 +9,11 @@ const layout = plugin(function ({ addUtilities }) {
       height: '100%',
       padding: 16,
     },
-    '.vStack': {
+    '.v-stack': {
       display: 'flex',
       flexDirection: 'row',
     },
-    '.hStack': {
+    '.h-stack': {
       display: 'flex',
       flexDirection: 'column',
     },

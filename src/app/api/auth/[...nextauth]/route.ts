@@ -7,11 +7,15 @@ import jwt_decode from 'jwt-decode'
 
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { getAccessToken } from '@/utils/getRefreshToken'
+import { authRoute } from '@/router/auth'
 
 const REFRESH_THRESHOLD = 600 // access token 만료 시간을 얼마나 남겨둘지 결정하는 값(단위: 초)
 
 export const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
+  pages: {
+    signIn: authRoute.signIn,
+  },
   callbacks: {
     async session({ session, token, user }) {
       if (token) {

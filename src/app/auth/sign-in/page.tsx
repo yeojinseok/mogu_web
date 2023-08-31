@@ -1,9 +1,9 @@
 import Image from 'next/image'
 import React from 'react'
-import svg from '../../public/mogu.svg'
+import svg from '../../../../public/mogu.svg'
 import Link from 'next/link'
 
-export default function Home() {
+export default function SignIn() {
   return (
     <div className="container flex items-center justify-center">
       <div className="items-center justify-center w-full gap-48 h-stack">
@@ -13,7 +13,7 @@ export default function Home() {
         </div>
         <Link
           className="flex w-full p-16 border rounded-lg title_body border-grey-300"
-          href={'/auth/email'}
+          href={'/auth/sign-in/email'}
         >
           <Image
             className="absolute"

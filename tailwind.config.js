@@ -1,4 +1,8 @@
+import * as lodash from 'lodash'
 const plugins = require('tailwindcss/plugin')
+
+const pxToRem = (px, base = 16) => `${px / base}rem`
+//https://fe-developers.kakaoent.com/2022/221013-tailwind-and-design-system/
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -8,6 +12,13 @@ module.exports = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    spacing: {
+      ...lodash.range(1, 100).reduce((acc, px) => {
+        acc[`${px}`] = pxToRem(px)
+        console.log(acc)
+        return acc
+      }, {}),
+    },
     colors: {
       lime: {
         50: '#D3F9CD',
@@ -70,5 +81,6 @@ module.exports = {
   plugins: [
     require('./tailwind-plugins/scrollbar-hide'),
     require('./tailwind-plugins/font-variants'),
+    require('./tailwind-plugins/layout'),
   ],
 }
