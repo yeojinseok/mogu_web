@@ -2,8 +2,9 @@ import Image from 'next/image'
 import React from 'react'
 import svg from '../../../../../public/mogu.svg'
 import Link from 'next/link'
-import Header from '@/components/layout/Header'
+import Header from '@/components/common/Header'
 import { signIn } from 'next-auth/react'
+import { Input } from '@/components/common/Input'
 
 export default function SignInEmail() {
   return (
@@ -17,8 +18,10 @@ export default function SignInEmail() {
           </div>
 
           <div className="h-stack">
-            <input className="border h-78" />
-            <input />
+            <form>
+              <Input placeholder="이메일" />
+              <Input placeholder="비밀번호" type="password" />
+            </form>
           </div>
         </div>
       </div>

@@ -3,7 +3,9 @@ import React from 'react'
 import svg from '../../../../public/mogu.svg'
 import Link from 'next/link'
 
-export default function SignIn() {
+export default function SignIn(props: {
+  searchParams: { [key: string]: string | string[] | undefined }
+}) {
   return (
     <div className="container flex items-center justify-center">
       <div className="items-center justify-center w-full gap-48 h-stack">
@@ -13,7 +15,10 @@ export default function SignIn() {
         </div>
         <Link
           className="flex w-full p-16 border rounded-lg title_body border-grey-300"
-          href={'/auth/sign-in/email'}
+          href={{
+            pathname: '/auth/sign-in/email',
+            query: props.searchParams,
+          }}
         >
           <Image
             className="absolute"
