@@ -7,7 +7,6 @@ const layout = plugin(function ({ addUtilities }) {
     '.container': {
       width: '100%',
       height: '100%',
-      padding: 16,
     },
     '.v-stack': {
       display: 'flex',
@@ -16,6 +15,14 @@ const layout = plugin(function ({ addUtilities }) {
     '.h-stack': {
       display: 'flex',
       flexDirection: 'column',
+    },
+    '.footer': {
+      position: 'absolute',
+      bottom: 0,
+
+      width: '100%',
+      maxWidth: '768px',
+      margin: '0 auto',
     },
   })
 })

@@ -1,30 +1,22 @@
+'use client'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect } from 'react'
 import svg from '../../public/mogu.svg'
 import Link from 'next/link'
+import { signIn, useSession } from 'next-auth/react'
 
 export default function Home() {
+  const session = useSession()
+
+  useEffect(() => {
+    if (!session.data?.accessToken) {
+      signIn()
+      return
+    } else {
+      // id에 해당하는 home 화면 보여주기
+    }
+  })
   return (
-    <div className="container flex items-center justify-center">
-      <div className="items-center justify-center w-full gap-48 h-stack">
-        <div className="relative items-center gap-16 h-stack">
-          <Image src={svg} width={60} height={60} alt="mogu-icon" />
-          <div className="title_screen">{'Always Together.With Mogu.'}</div>
-        </div>
-        <Link
-          className="flex w-full p-16 border rounded-lg title_body border-grey-300"
-          href={'/auth/email'}
-        >
-          <Image
-            className="absolute"
-            src={svg}
-            width={24}
-            height={24}
-            alt="mogu-icon"
-          />
-          <div className="w-full text-center"> 이메일로 계속하기</div>
-        </Link>
-      </div>
-    </div>
+    <div className="container flex items-center justify-center">loading</div>
   )
 }

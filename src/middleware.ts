@@ -21,12 +21,12 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL(homeRoute.index, req.url))
   }
 
-  if (req.nextUrl.pathname === '/') {
-    if (token?.accessToken) {
-      return NextResponse.redirect(new URL(homeRoute.index, req.url))
-    }
-    return NextResponse.redirect(new URL(authRoute.signIn, req.url))
-  }
+  // if (req.nextUrl.pathname === '/') {
+  //   if (token?.accessToken) {
+  //     return NextResponse.redirect(new URL(homeRoute.index, req.url))
+  //   }
+  //   return NextResponse.redirect(new URL(authRoute.signIn, req.url))
+  // }
 }
 
 // export default withAuth(function middleware(req) {}, {

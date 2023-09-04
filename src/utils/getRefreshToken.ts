@@ -1,6 +1,6 @@
 import { axiosInstance } from '@/axios/axiosInstance'
 
-export async function getAccessToken(refreshToken: string) {
+export async function getAccessToken(refreshToken?: string) {
   try {
     const response = await axiosInstance.post<{
       accessToken: string
@@ -21,7 +21,5 @@ export async function getAccessToken(refreshToken: string) {
     // eslint-disable-next-line no-param-reassign
 
     return response.data.accessToken
-  } catch (error) {
-    return null
-  }
+  } catch (error) {}
 }

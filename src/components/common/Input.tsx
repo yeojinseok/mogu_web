@@ -3,11 +3,11 @@
 import React, { useState } from 'react'
 import tw, { styled } from 'twin.macro'
 
-interface ButtonProps {
+interface InputProps {
   showLabel: boolean
 }
 
-const InputStyled = styled.input<ButtonProps>`
+const InputStyled = styled.input<InputProps>`
   ${tw`w-full px-16 py-12 border rounded title_subsection h-78 border-grey-200 focus:outline-focus_green`}
   ${props => (props.showLabel ? tw`pt-38` : undefined)}
 `
@@ -24,6 +24,7 @@ export const Input = React.forwardRef<
   return (
     <div className="relative ">
       <InputStyled
+        style={{}}
         value={value}
         ref={ref}
         {...props}

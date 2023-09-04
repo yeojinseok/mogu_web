@@ -10,6 +10,7 @@ export default function Header() {
   return (
     <div className="h-56 p-16 ">
       <Image
+        className=" hover:cursor-pointer"
         onClick={() => {
           router.back()
         }}

@@ -2,13 +2,18 @@ import Image from 'next/image'
 import React from 'react'
 import svg from '../../../../public/mogu.svg'
 import Link from 'next/link'
+import { getProviders } from 'next-auth/react'
 
-export default function SignIn(props: {
+export default async function SignIn(props: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
+  const providers = await getProviders()
+
+  console.log(providers)
+
   return (
     <div className="container flex items-center justify-center">
-      <div className="items-center justify-center w-full gap-48 h-stack">
+      <div className="items-center justify-center w-full gap-48 p-16 h-stack">
         <div className="relative items-center gap-16 h-stack">
           <Image src={svg} width={60} height={60} alt="mogu-icon" />
           <div className="title_screen">{'Always Together.With Mogu.'}</div>
