@@ -1,6 +1,7 @@
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 import { homeRoute } from './router/home'
+import { authRoute } from './router/auth'
 
 export async function middleware(req: NextRequest) {
   // 서버사이드에서 로그인 유무를 판단할 수 있는 next-auth 제공 함수
@@ -16,8 +17,15 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL(authRoute.signIn, req.url))
   }
   //@ts-ignore
-  // if (isAuthPage && token?.accessToken) {
-  //   return NextResponse.redirect(new URL(homeRoute.index, req.url))
+  if (isAuthPage && token?.accessToken) {
+    return NextResponse.redirect(new URL(homeRoute.index, req.url))
+  }
+
+  // if (req.nextUrl.pathname === '/') {
+  //   if (token?.accessToken) {
+  //     return NextResponse.redirect(new URL(homeRoute.index, req.url))
+  //   }
+  //   return NextResponse.redirect(new URL(authRoute.signIn, req.url))
   // }
 }
 

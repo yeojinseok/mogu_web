@@ -6,14 +6,9 @@ import { getSession, signIn, useSession } from 'next-auth/react'
  * Home 화면의 Header
  */
 export default function Header() {
-  const use = useSession()
-
   return (
     <>
-      <div
-        onClick={() => signIn()}
-        className=" h-[140px] p-4 flex flex-col gap-4 "
-      >
+      <div className=" h-[140px] p-4 flex flex-col gap-4 ">
         <div className="flex justify-end">
           <span className="w-8 h-8 rounded-full bg-grey-50" />
         </div>

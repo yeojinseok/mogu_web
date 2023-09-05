@@ -7,11 +7,15 @@ import jwt_decode from 'jwt-decode'
 
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { getAccessToken } from '@/utils/getRefreshToken'
+import { authRoute } from '@/router/auth'
 
 const REFRESH_THRESHOLD = 600 // access token 만료 시간을 얼마나 남겨둘지 결정하는 값(단위: 초)
 
 export const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
+  pages: {
+    signIn: authRoute.signIn,
+  },
   callbacks: {
     async session({ session, token, user }) {
       if (token) {
@@ -27,9 +31,8 @@ export const authOptions: AuthOptions = {
     },
     async jwt({ token, user }) {
       if (user) {
-        //@ts-ignore
         token.accessToken = user.accessToken
-        //@ts-ignore
+
         token.refreshToken = user.refreshToken
         token.id = user.id
       }
@@ -40,8 +43,7 @@ export const authOptions: AuthOptions = {
       const expirationTime = jwt_decode(token?.accessToken as string).exp
 
       if (expirationTime - now < REFRESH_THRESHOLD) {
-        //@ts-ignore
-        const accessToken = await getAccessToken(token?.refreshToken as string)
+        const accessToken = await getAccessToken(token?.refreshToken)
         token.accessToken = accessToken
       }
 
@@ -56,6 +58,30 @@ export const authOptions: AuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, req) {
+        console.log(credentials, '??')
+        if (typeof credentials !== 'undefined') {
+          const res = await axiosInstance
+            .post('/shops/users/sign-in', credentials)
+            .then(v => v.data)
+
+          if (typeof res !== 'undefined') {
+            return { ...res, name: 'gdgd' }
+          } else {
+            return null
+          }
+        } else {
+          return null
+        }
+      },
+    }),
+    CredentialsProvider({
+      name: 'Credentialsss',
+      credentials: {
+        email: { label: 'Email', type: 'text' },
+        password: { label: 'Password', type: 'password' },
+      },
+      async authorize(credentials, req) {
+        console.log(credentials, '??')
         if (typeof credentials !== 'undefined') {
           const res = await axiosInstance
             .post('/shops/users/sign-in', credentials)

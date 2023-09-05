@@ -1,10 +1,22 @@
-import React from 'react'
+'use client'
+import Image from 'next/image'
+import React, { useEffect } from 'react'
+import svg from '../../public/mogu.svg'
+import Link from 'next/link'
+import { signIn, useSession } from 'next-auth/react'
 
 export default function Home() {
+  const session = useSession()
+
+  useEffect(() => {
+    if (!session.data?.accessToken) {
+      signIn()
+      return
+    } else {
+      // id에 해당하는 home 화면 보여주기
+    }
+  })
   return (
-    <>
-      <div className="">안녕하세요 테스트입니다아아아아 enafsdf husic</div>
-      <div>슈이트</div>
-    </>
+    <div className="container flex items-center justify-center">loading</div>
   )
 }
