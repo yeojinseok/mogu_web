@@ -2,13 +2,11 @@
 import Image from 'next/image'
 import React from 'react'
 import svg from '../../../../../public/mogu.svg'
-import Link from 'next/link'
 import Header from '@/components/common/Header'
 
-import { getCsrfToken, signIn } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 import { Input } from '@/components/common/Input'
 import { ButtonStyled } from '@/components/common/Button'
-import { getServerSession } from 'next-auth'
 
 export default async function SignInEmail(props: {
   searchParams: { [key: string]: string | string[] | undefined }
@@ -26,7 +24,7 @@ export default async function SignInEmail(props: {
               email: data.get('email') as string,
               password: data.get('password') as string,
               redirect: true,
-              callbackUrl: props.searchParams.callbackUrl,
+              callbackUrl: props.searchParams.callbackUrl as string,
             })
             console.log(result)
           }}

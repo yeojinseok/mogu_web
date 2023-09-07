@@ -14,7 +14,7 @@ export const ButtonStyled = styled.button`
 `
 
 export const Input = React.forwardRef<HTMLButtonElement, CustomButtonProps>(
-  (props, ref) => {
+ function Input (props, ref) {
     const debounceCallback = (
       e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {

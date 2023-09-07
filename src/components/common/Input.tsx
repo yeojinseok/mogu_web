@@ -15,7 +15,7 @@ const InputStyled = styled.input<InputProps>`
 export const Input = React.forwardRef<
   HTMLInputElement,
   React.InputHTMLAttributes<HTMLInputElement>
->((props, ref) => {
+>(function Input(props, ref)  {
   const [isFocus, setIsFocus] = useState(false)
   const [value, setValue] = useState('')
 

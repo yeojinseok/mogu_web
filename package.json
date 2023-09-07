@@ -13,7 +13,7 @@
     "@aws-sdk/s3-request-presigner": "^3.369.0",
     "@sanity/image-url": "^1.0.2",
     "@tailwindcss/typography": "^0.5.9",
-    "@types/lodash": "^4.14.197",
+    "@types/lodash": "^4.14.198",
     "@types/mime-types": "^2.1.1",
     "@types/node": "20.2.1",
     "@types/qs": "^6.9.7",
