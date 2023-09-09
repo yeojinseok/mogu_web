@@ -5,16 +5,16 @@ import tw, { styled } from 'twin.macro'
 import { debounce } from 'lodash'
 
 interface CustomButtonProps
-  extends React.InputHTMLAttributes<HTMLButtonElement> {
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean
 }
 
 export const ButtonStyled = styled.button`
-  ${tw`flex items-center justify-center w-full rounded bg-lime-500 h-52 title_body`}
+  ${tw`flex items-center justify-center w-full bg-lime-500 h-52 title_body`}
 `
 
-export const Input = React.forwardRef<HTMLButtonElement, CustomButtonProps>(
- function Input (props, ref) {
+export const Button = React.forwardRef<HTMLButtonElement, CustomButtonProps>(
+  function Button(props, ref) {
     const debounceCallback = (
       e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {

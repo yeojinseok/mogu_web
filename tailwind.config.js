@@ -1,4 +1,4 @@
-import * as lodash from 'lodash'
+const { range } = require('lodash')
 const plugins = require('tailwindcss/plugin')
 
 const pxToRem = (px, base = 16) => `${px / base}rem`
@@ -13,7 +13,19 @@ module.exports = {
   ],
   theme: {
     spacing: {
-      ...lodash.range(1, 500).reduce((acc, px) => {
+      ...range(1, 500).reduce((acc, px) => {
+        acc[`${px}`] = pxToRem(px)
+        return acc
+      }, {}),
+    },
+    borderWidth: {
+      ...range(1, 500).reduce((acc, px) => {
+        acc[`${px}`] = pxToRem(px)
+        return acc
+      }, {}),
+    },
+    borderRadius: {
+      ...range(1, 500).reduce((acc, px) => {
         acc[`${px}`] = pxToRem(px)
         return acc
       }, {}),
