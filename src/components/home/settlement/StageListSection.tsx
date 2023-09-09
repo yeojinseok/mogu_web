@@ -44,7 +44,6 @@ function AddStageChip() {
     useRecoilState(currentSelectedStage)
 
   const addStage = () => {
-    console.log('??')
     setCurrentSelectedStageLevel(prev => prev + 1)
     setStageList(prev =>
       prev.concat({
