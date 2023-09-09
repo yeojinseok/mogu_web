@@ -4,11 +4,11 @@ import Image from 'next/image'
 import backIcon from '../../../public/backIcon.svg'
 import { useRouter } from 'next/navigation'
 
-export default function Header() {
+export default function Header({ title }: { title?: string }) {
   const router = useRouter()
 
   return (
-    <div className="h-56 p-16 ">
+    <div className="items-center justify-between h-56 p-16 v-stack title_subsection">
       <Image
         className=" hover:cursor-pointer"
         onClick={() => {
@@ -19,6 +19,8 @@ export default function Header() {
         height={24}
         alt="backIcon"
       />
+      <div className="">{title}</div>
+      <div></div>
     </div>
   )
 }

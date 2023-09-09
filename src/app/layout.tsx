@@ -1,4 +1,3 @@
-
 import type { Metadata } from 'next'
 import GlobalStyles from '@/styles/GlobalStyles'
 import StyledComponentsRegistry from '@/lib/registry'
@@ -7,6 +6,7 @@ import '../app/globals.css'
 import { getServerSession } from 'next-auth'
 import { authOptions } from './api/auth/[...nextauth]/route'
 import AuthContext from '@/context/AuthContext'
+import RecoilProvider from '@/context/RecoilProvider'
 
 export const metadata: Metadata = {
   title: 'Twin example',
@@ -29,7 +29,9 @@ export default async function RootLayout({
         <div className="flex-auto w-full h-full overflow-hidden bg-white max-w-screen-tablet">
           <StyledComponentsRegistry>
             <GlobalStyles />
-            <AuthContext session={session}>{children}</AuthContext>
+            <RecoilProvider>
+              <AuthContext session={session}>{children}</AuthContext>
+            </RecoilProvider>
           </StyledComponentsRegistry>
         </div>
       </body>
