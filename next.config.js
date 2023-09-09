@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-
   reactStrictMode: true,
   compiler: {
     styledComponents: true,
@@ -33,6 +32,5 @@ const withTwin = require('./withTwin.js')
  * @type {import('next').NextConfig}
  */
 module.exports = withTwin({
-  output: 'export',
   reactStrictMode: true,
 })
