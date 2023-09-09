@@ -7,10 +7,6 @@ import { getProviders } from 'next-auth/react'
 export default async function SignIn(props: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
-  const providers = await getProviders()
-
-  console.log(providers)
-
   return (
     <div className="container flex items-center justify-center">
       <div className="items-center justify-center w-full gap-48 p-16 h-stack">

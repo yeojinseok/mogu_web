@@ -20,6 +20,7 @@ declare module 'next-auth' {
   interface User extends IUser {
     accessToken?: string
     refreshToken?: string
+    userID?: string
   }
   interface Session {
     user?: User

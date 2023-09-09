@@ -10,37 +10,20 @@ export async function middleware(req: NextRequest) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
 
   // 사용자가 요청하는 페이지 pathname
-  const isProtectedPage = req.nextUrl.pathname.includes('protected')
-  const isAuthPage = req.nextUrl.pathname.includes('auth')
-  //@ts-ignore
+  const isProtectedPage =
+    req.nextUrl.pathname.includes('protected') || req.nextUrl.pathname === '/'
+  // const isAuthPage = req.nextUrl.pathname.includes('auth')
+
   if (isProtectedPage && !token?.accessToken) {
-    return NextResponse.redirect(new URL(authRoute.signIn, req.url))
-  }
-  //@ts-ignore
-  if (isAuthPage && token?.accessToken) {
-    return NextResponse.redirect(new URL(homeRoute.index, req.url))
+    return NextResponse.redirect(new URL('/api/auth/signin', req.url))
   }
 
-  // if (req.nextUrl.pathname === '/') {
-  //   if (token?.accessToken) {
-  //     return NextResponse.redirect(new URL(homeRoute.index, req.url))
-  //   }
-  //   return NextResponse.redirect(new URL(authRoute.signIn, req.url))
-  // }
+  if (req.nextUrl.pathname === '/') {
+    if (!token) {
+      return NextResponse.redirect(new URL('/api/auth/signin', req.url))
+    }
+    return NextResponse.redirect(
+      new URL(homeRoute.home(token?.id ?? ''), req.url)
+    )
+  }
 }
-
-// export default withAuth(function middleware(req) {}, {
-//   callbacks: {
-//     authorized: ({ req, token }) => {
-//       if (req.nextUrl.pathname.startsWith('/protected') && token === null) {
-//         return false
-//       }
-//       return true
-//     },
-//   },
-// })
-
-//   // 미들웨어가 실행될 특정 pathname을 지정하면, 해당 pathname에서만 실행 가능
-//   export const config = {
-//       mathcher : [...withAuthList, ...withOutAuthList]
-//   }
