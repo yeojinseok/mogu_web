@@ -34,7 +34,7 @@ export const authOptions: AuthOptions = {
         token.accessToken = user.accessToken
 
         token.refreshToken = user.refreshToken
-        token.id = user.id
+        token.id = user.userID ?? ''
       }
 
       const now = Date.now() / 1000
@@ -58,37 +58,13 @@ export const authOptions: AuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, req) {
-        console.log(credentials, '??')
         if (typeof credentials !== 'undefined') {
           const res = await axiosInstance
             .post('/shops/users/sign-in', credentials)
             .then(v => v.data)
 
           if (typeof res !== 'undefined') {
-            return { ...res, name: 'gdgd' }
-          } else {
-            return null
-          }
-        } else {
-          return null
-        }
-      },
-    }),
-    CredentialsProvider({
-      name: 'Credentialsss',
-      credentials: {
-        email: { label: 'Email', type: 'text' },
-        password: { label: 'Password', type: 'password' },
-      },
-      async authorize(credentials, req) {
-        console.log(credentials, '??')
-        if (typeof credentials !== 'undefined') {
-          const res = await axiosInstance
-            .post('/shops/users/sign-in', credentials)
-            .then(v => v.data)
-
-          if (typeof res !== 'undefined') {
-            return { ...res, name: 'gdgd' }
+            return { ...res }
           } else {
             return null
           }

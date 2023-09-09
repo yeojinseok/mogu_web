@@ -24,9 +24,8 @@ export default async function SignInEmail(props: {
               email: data.get('email') as string,
               password: data.get('password') as string,
               redirect: true,
-              callbackUrl: props.searchParams.callbackUrl as string,
+              callbackUrl: '/',
             })
-            console.log(result)
           }}
         >
           <div className="gap-24 p-16 pt-24 h-stack">

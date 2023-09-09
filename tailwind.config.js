@@ -15,7 +15,6 @@ module.exports = {
     spacing: {
       ...lodash.range(1, 100).reduce((acc, px) => {
         acc[`${px}`] = pxToRem(px)
-        console.log(acc)
         return acc
       }, {}),
     },
