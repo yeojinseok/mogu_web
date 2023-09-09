@@ -13,7 +13,7 @@ module.exports = {
   ],
   theme: {
     spacing: {
-      ...lodash.range(1, 100).reduce((acc, px) => {
+      ...lodash.range(1, 500).reduce((acc, px) => {
         acc[`${px}`] = pxToRem(px)
         return acc
       }, {}),
