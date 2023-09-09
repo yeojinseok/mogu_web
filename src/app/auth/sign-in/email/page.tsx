@@ -24,7 +24,7 @@ export default async function SignInEmail(props: {
               email: data.get('email') as string,
               password: data.get('password') as string,
               redirect: true,
-              callbackUrl: '/',
+              callbackUrl: props.searchParams.callbackUrl as string,
             })
           }}
         >
