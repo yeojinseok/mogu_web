@@ -1,4 +1,10 @@
-import { GetRecoilValue, atom, selectorFamily } from 'recoil'
+import {
+  DefaultValue,
+  GetRecoilValue,
+  SetRecoilState,
+  atom,
+  selectorFamily,
+} from 'recoil'
 import { SettlementStageType } from '../../types/settlementStageType'
 
 export const settlementStageListState = atom<SettlementStageType[]>({
@@ -17,11 +23,67 @@ export const settlementStageState = selectorFamily({
   get:
     (level: number) =>
     ({ get }: { get: GetRecoilValue }) => {
-      return get(settlementStageListState).find(v => v.level === level)
+      const stage = get(settlementStageListState).find(v => v.level === level)
+      if (!stage) {
+        throw new Error('error!')
+      }
+      return stage
+    },
+  set:
+    (level: number) =>
+    (
+      { set }: { set: SetRecoilState },
+      newValue: SettlementStageType | DefaultValue
+    ) => {
+      set(settlementStageListState, prev => {
+        if (newValue instanceof DefaultValue) {
+          return prev
+        }
+
+        const prevList = [...prev]
+        const index = prevList.findIndex(v => v.level === level)
+        prevList.splice(index, 0, newValue)
+
+        return prevList
+      })
     },
 })
 
-export const currentSelectedStage = atom<number>({
-  key: 'currentSelectedStageState',
+const createSettlementStageStateSpecificKeySelector = <
+  T extends keyof SettlementStageType
+>(
+  key: T
+) => {
+  return selectorFamily({
+    key: 'taskItemDraftState' + key,
+    get:
+      (level: number) =>
+      ({ get }) => {
+        return get(settlementStageState(level))?.[key]
+      },
+    set:
+      (level: number) =>
+      ({ set }, newValue) => {
+        set(settlementStageState(level), prevState => {
+          return {
+            ...prevState,
+            [key]: newValue,
+          }
+        })
+      },
+  })
+}
+
+export const settlementTotalPriceState =
+  createSettlementStageStateSpecificKeySelector('totalPrice')
+
+export const settlementLevelState =
+  createSettlementStageStateSpecificKeySelector('level')
+
+export const settlementFriendsState =
+  createSettlementStageStateSpecificKeySelector('friends')
+
+export const currentSelectedStageLevelStage = atom<number>({
+  key: 'currentSelectedStageLevelStage',
   default: 1,
 })
