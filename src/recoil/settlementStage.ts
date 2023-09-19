@@ -42,7 +42,7 @@ export const settlementStageState = selectorFamily({
 
         const prevList = [...prev]
         const index = prevList.findIndex(v => v.level === level)
-        prevList.splice(index, 0, newValue)
+        prevList.splice(index, 1, newValue)
 
         return prevList
       })
@@ -55,7 +55,7 @@ const createSettlementStageStateSpecificKeySelector = <
   key: T
 ) => {
   return selectorFamily({
-    key: 'taskItemDraftState' + key,
+    key: 'settlementState' + key,
     get:
       (level: number) =>
       ({ get }) => {
@@ -74,6 +74,45 @@ const createSettlementStageStateSpecificKeySelector = <
   })
 }
 
+export const settlementFriendFromID = selectorFamily({
+  key: 'settlementFriend',
+  get:
+    ({ level, id }: { level: number; id: string }) =>
+    ({ get }) => {
+      const value = get(settlementStageState(level)).friends.find(
+        v => v.id === id
+      )
+      if (!value) {
+        throw new Error('error!')
+      }
+      return value
+    },
+  set:
+    ({ level, id }: { level: number; id: string }) =>
+    ({ set }, newValue) => {
+      set(settlementStageListState, prev => {
+        if (newValue instanceof DefaultValue) {
+          return prev
+        }
+
+        const prevList = [...prev]
+        const index = prevList.findIndex(v => v.level === level)
+
+        const prevFriendsList = [...prevList[index].friends]
+        const changeFriendIndex = prevFriendsList.findIndex(v => v.id === id)
+
+        prevFriendsList.splice(changeFriendIndex, 1, newValue)
+
+        prevList.splice(index, 1, {
+          ...prevList[index],
+          friends: prevFriendsList,
+        })
+
+        return prevList
+      })
+    },
+})
+
 export const settlementTotalPriceState =
   createSettlementStageStateSpecificKeySelector('totalPrice')
 
@@ -87,3 +126,12 @@ export const currentSelectedStageLevelStage = atom<number>({
   key: 'currentSelectedStageLevelStage',
   default: 1,
 })
+
+/**
+ * 시나리오 1
+ * 30000원
+ * 특정금액인 친구들의 금액을 제외
+ * price 변경할 때도 변경해야함
+ *
+ *
+ */

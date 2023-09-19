@@ -10,11 +10,11 @@ const layout = plugin(function ({ addUtilities }) {
     },
     '.v-stack': {
       display: 'flex',
-      flexDirection: 'row',
+      flexDirection: 'column',
     },
     '.h-stack': {
       display: 'flex',
-      flexDirection: 'column',
+      flexDirection: 'row',
     },
     '.footer': {
       position: 'absolute',

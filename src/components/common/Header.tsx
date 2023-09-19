@@ -8,7 +8,7 @@ export default function Header({ title }: { title?: string }) {
   const router = useRouter()
 
   return (
-    <div className="items-center justify-between h-56 p-16 v-stack title_subsection">
+    <div className="items-center justify-between h-56 p-16 h-stack title_subsection">
       <Image
         className=" hover:cursor-pointer"
         onClick={() => {

@@ -4,7 +4,8 @@ export type SettlementStageType = {
   friends: SettlementFriendsType[]
 }
 
-type SettlementFriendsType = {
+export type SettlementFriendsType = {
+  id: string
   name: string
   settlementType: string
   price: number

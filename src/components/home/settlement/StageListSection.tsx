@@ -2,15 +2,14 @@
 
 import { Chip } from '@/components/common/Chip'
 import {
-  currentSelectedStage,
+  currentSelectedStageLevelStage,
   settlementStageListState,
 } from '@/recoil/settlementStage'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
-import { SettlementStageType } from '../../../../types/settlementStageType'
 
 export default function StageListSection() {
   return (
-    <div className="w-full gap-12 px-16 mt-32 overflow-y-scroll v-stack scrollbar-hide">
+    <div className="w-full gap-12 mt-32 overflow-x-scroll min-h-40 h-stack scrollbar-hide">
       <StageList />
       <AddStageChip />
     </div>
@@ -20,7 +19,7 @@ export default function StageListSection() {
 function StageList() {
   const stageList = useRecoilValue(settlementStageListState)
   const [currentSelectedStageLevel, setCurrentSelectedStageLevel] =
-    useRecoilState(currentSelectedStage)
+    useRecoilState(currentSelectedStageLevelStage)
 
   return (
     <>
@@ -41,7 +40,7 @@ function StageList() {
 function AddStageChip() {
   const setStageList = useSetRecoilState(settlementStageListState)
   const [currentSelectedStageLevel, setCurrentSelectedStageLevel] =
-    useRecoilState(currentSelectedStage)
+    useRecoilState(currentSelectedStageLevelStage)
 
   const addStage = () => {
     setCurrentSelectedStageLevel(prev => prev + 1)
@@ -54,5 +53,5 @@ function AddStageChip() {
     )
   }
 
-  return <Chip title="차수 추가" onClick={addStage} />
+  return <Chip title="차슈 추가" onClick={addStage} />
 }
