@@ -19,9 +19,7 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async session({ session, token, user }) {
       if (token) {
-        //@ts-ignore
         session.accessToken = token.accessToken
-        //@ts-ignore
         session.refreshToken = token.refreshToken
         //@ts-ignore
         session.id = token.id
@@ -58,11 +56,13 @@ export const authOptions: AuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, req) {
+        console.log(credentials)
         if (typeof credentials !== 'undefined') {
           const res = await axiosInstance
             .post('/shops/users/sign-in', credentials)
             .then(v => v.data)
 
+          console.log(res, credentials, '?')
           if (typeof res !== 'undefined') {
             return { ...res }
           } else {

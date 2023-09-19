@@ -10,7 +10,7 @@ interface ChipProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export const ChipStyled = styled.button<{ active: boolean }>`
-  ${tw`px-20 py-8 title_body border-1 rounded-99 shrink-0`}
+  ${tw`h-40 px-20 py-8 title_body border-1 rounded-99 shrink-0`}
   ${theme => (theme.active ? tw`bg-grey-900 text-grey-50 ` : undefined)}
 `
 

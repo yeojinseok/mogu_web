@@ -19,6 +19,7 @@ export async function middleware(req: NextRequest) {
   }
 
   if (req.nextUrl.pathname === '/') {
+    console.log('??')
     if (!token) {
       return NextResponse.redirect(new URL('/api/auth/signin', req.url))
     }

@@ -12,6 +12,20 @@ module.exports = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    minHeight: {
+      ...range(1, 500).reduce((acc, px) => {
+        acc[`${px}`] = pxToRem(px)
+        return acc
+      }, {}),
+      full: '100%',
+    },
+    minWidth: {
+      ...range(1, 500).reduce((acc, px) => {
+        acc[`${px}`] = pxToRem(px)
+        return acc
+      }, {}),
+      full: '100%',
+    },
     spacing: {
       ...range(1, 500).reduce((acc, px) => {
         acc[`${px}`] = pxToRem(px)
