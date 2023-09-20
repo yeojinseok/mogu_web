@@ -12,21 +12,22 @@ import { SettlementFriendsType } from '../../../../types/settlementStageType'
 import { Select } from '@/components/common/Select'
 import { v4 as uuidv4 } from 'uuid'
 import { clamp } from '@toss/utils'
-import { forEach } from 'lodash'
+import { forEach, isNaN } from 'lodash'
 import MoguSelect from '@/components/common/MoguSelect'
+import tw from 'twin.macro'
 
 const SETTLEMENT_STATE_LIST = [
   {
-    id: '더치페이',
-    name: '더치페이',
+    value: '더치페이',
+    label: '더치페이',
   },
   {
-    id: '특정금액',
-    name: '특정금액',
+    value: '특정금액',
+    label: '특정금액',
   },
   {
-    id: '퍼센트',
-    name: '퍼센트',
+    value: '퍼센트',
+    label: '퍼센트 %',
   },
 ]
 
@@ -86,9 +87,7 @@ function FriendListHeader() {
   )
 
   const addFriends = () => {
-    setFriends(prev =>
-      prev.concat([{ id: uuidv4(), name: '', price: 0, settlementType: '' }])
-    )
+    setFriends(prev => prev.concat([{ id: uuidv4(), name: '', price: 0 }]))
   }
   return (
     <div className="items-center justify-between h-stack">
@@ -149,7 +148,7 @@ function FriendItem({ id }: { id: string }) {
             inputSize="sm"
             placeholder="이름"
           />
-          <select
+          {/* <select
             value={friend.settlementType}
             onChange={e => {
               setFriend(prev => ({ ...prev, settlementType: e.target.value }))
@@ -158,8 +157,43 @@ function FriendItem({ id }: { id: string }) {
             {SETTLEMENT_STATE_LIST.map(state => (
               <option value={state.id}>{state.name}</option>
             ))}
-          </select>
-          <MoguSelect />
+          </select> */}
+          <div className="flex items-center justify-between w-104">
+            {friend.settlementType === '퍼센트' ? (
+              <Input2
+                value={friend.settlementPercent ?? 0}
+                onChange={e => {
+                  const { value } = e.target
+
+                  if (isNaN(Number(value))) {
+                    return
+                  }
+
+                  setFriend(prev => ({
+                    ...prev,
+                    settlementPercent: clamp(Number(value), 0, 100),
+                  }))
+                }}
+                className="text-center w-63"
+                inputSize="sm"
+                placeholder="% 입력"
+              />
+            ) : (
+              <div
+                css={friend.settlementType ? undefined : tw`text-grey-100`}
+                className=" title_body"
+              >
+                {friend.settlementType ?? '타입선택'}
+              </div>
+            )}
+
+            <MoguSelect
+              options={SETTLEMENT_STATE_LIST}
+              onChange={v =>
+                setFriend(prev => ({ ...prev, settlementType: v }))
+              }
+            />
+          </div>
         </div>
         <div className="items-center h-stack">
           <Input2

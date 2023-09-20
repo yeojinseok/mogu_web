@@ -7,6 +7,7 @@ export type SettlementStageType = {
 export type SettlementFriendsType = {
   id: string
   name: string
-  settlementType: string
+  settlementType?: string
+  settlementPercent?: number
   price: number
 }
