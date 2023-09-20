@@ -148,16 +148,7 @@ function FriendItem({ id }: { id: string }) {
             inputSize="sm"
             placeholder="이름"
           />
-          {/* <select
-            value={friend.settlementType}
-            onChange={e => {
-              setFriend(prev => ({ ...prev, settlementType: e.target.value }))
-            }}
-          >
-            {SETTLEMENT_STATE_LIST.map(state => (
-              <option value={state.id}>{state.name}</option>
-            ))}
-          </select> */}
+
           <div className="flex items-center justify-between w-104">
             {friend.settlementType === '퍼센트' ? (
               <Input2
