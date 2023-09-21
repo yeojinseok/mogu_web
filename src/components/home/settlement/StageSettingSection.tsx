@@ -15,6 +15,7 @@ import { clamp } from '@toss/utils'
 import { forEach, isNaN } from 'lodash'
 import MoguSelect from '@/components/common/MoguSelect'
 import tw from 'twin.macro'
+import { useEffect } from 'react'
 
 const SETTLEMENT_STATE_LIST = [
   {
@@ -131,9 +132,74 @@ function FriendItem({ id }: { id: string }) {
     settlementTotalPriceState(currentSelectedStageLevel)
   )
 
+  const [friends, setFriends] = useRecoilState(
+    settlementFriendsState(currentSelectedStageLevel)
+  )
+
+  const 특정금액_빼고_남은_금액 = friends.reduce((prev, curr) => {
+    if (curr.settlementType === '특정금액' && curr.id !== id) {
+      return prev - curr.price
+    }
+    return prev
+  }, totalPrice)
+
+  const 퍼센트금액_빼고_남은_금액 = friends.reduce((prev, curr) => {
+    if (curr.settlementType === '퍼센트' && curr.id !== id) {
+      return prev - curr.price
+    }
+    return prev
+  }, 특정금액_빼고_남은_금액)
+
+  const remainingPercent = friends.reduce((prev, curr) => {
+    if (curr.settlementType === '퍼센트' && curr.id !== id) {
+      return prev - (curr.settlementPercent ?? 0)
+    }
+    return prev
+  }, 100)
+
+  const friendsLength = friends.filter(
+    v => v.settlementType === '더치페이'
+  ).length
+
   const [friend, setFriend] = useRecoilState(
     settlementFriendFromID({ level: currentSelectedStageLevel, id: id })
   )
+
+  useEffect(() => {
+    switch (friend.settlementType) {
+      case '퍼센트': {
+        setFriend(prev => ({
+          ...prev,
+          price:
+            (특정금액_빼고_남은_금액 * (prev.settlementPercent ?? 0)) / 100,
+        }))
+        break
+      }
+      case '특정금액': {
+        setFriend(prev => ({
+          ...prev,
+          price: clamp(Number(prev.price), 0, 특정금액_빼고_남은_금액),
+        }))
+        break
+      }
+      case '더치페이': {
+        setFriend(prev => ({
+          ...prev,
+          price:
+            퍼센트금액_빼고_남은_금액 /
+            friends.filter(v => v.settlementType === '더치페이').length,
+        }))
+        break
+      }
+    }
+  }, [
+    특정금액_빼고_남은_금액,
+    totalPrice,
+    remainingPercent,
+    퍼센트금액_빼고_남은_금액,
+    friend.settlementType,
+    friendsLength,
+  ])
 
   return (
     <div className="h-stack">
@@ -160,9 +226,12 @@ function FriendItem({ id }: { id: string }) {
                     return
                   }
 
+                  const percent = clamp(Number(value), 0, remainingPercent)
+
                   setFriend(prev => ({
                     ...prev,
-                    settlementPercent: clamp(Number(value), 0, 100),
+                    settlementPercent: percent,
+                    price: (특정금액_빼고_남은_금액 * percent) / 100,
                   }))
                 }}
                 className="text-center w-63"
@@ -200,7 +269,7 @@ function FriendItem({ id }: { id: string }) {
 
               setFriend(prev => ({
                 ...prev,
-                price: clamp(Number(price), 0, totalPrice),
+                price: clamp(Number(price), 0, 특정금액_빼고_남은_금액),
               }))
             }}
             className="text-center w-63"
