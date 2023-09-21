@@ -18,17 +18,27 @@ export default function MoguSelect({
 
   const [isFocus, setIsFocus] = useState(false)
 
+  const getContainerRect = () => {
+    if (!iconRef.current) return
+
+    const { left, bottom } = iconRef.current.getBoundingClientRect()
+
+    return {
+      right: left - 20,
+      top: bottom + 10,
+    }
+  }
+
   return (
     <div
       ref={iconRef}
       tabIndex={-1}
-      className="relative flex"
+      className="flex "
       onBlur={() => {
         setIsFocus(false)
       }}
     >
       <div
-        ref={iconRef}
         onClick={() => {
           setIsFocus(prev => !prev)
         }}
@@ -36,7 +46,10 @@ export default function MoguSelect({
         <FaChevronDown size={12} />
       </div>
       {isFocus && (
-        <div className="absolute px-8 py-4 shadow-lg -left-100 top-12 text-grey-500 rounded-8 min-w-120 ">
+        <div
+          className="fixed z-50 px-8 py-4 bg-white shadow-lg text-grey-500 rounded-8 min-w-120 "
+          style={getContainerRect()}
+        >
           {options.map((option, index) => (
             <div
               key={option.value}
