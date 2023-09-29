@@ -1,4 +1,4 @@
-import { ButtonStyled } from '@/components/common/Button'
+import { Button, ButtonStyled } from '@/components/common/Button'
 import Header from '@/components/common/Header'
 import IntermediateCheck from '@/components/home/settlement/IntermediateCheck'
 import StageListSection from '@/components/home/settlement/StageListSection'
@@ -14,7 +14,7 @@ export default function SettlementPage() {
         <StageSettingSection />
       </div>
       <div className="p-16 footer">
-        <ButtonStyled type="submit">다음</ButtonStyled>
+        <Button>다음</Button>
       </div>
     </div>
   )
