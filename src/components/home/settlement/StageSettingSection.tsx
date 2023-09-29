@@ -16,6 +16,7 @@ import { forEach, isNaN } from 'lodash'
 import MoguSelect from '@/components/common/MoguSelect'
 import tw from 'twin.macro'
 import { useEffect } from 'react'
+import { addComma } from '@/utils/helper'
 
 const SETTLEMENT_STATE_LIST = [
   {
@@ -283,11 +284,6 @@ function FriendItem({ id }: { id: string }) {
       </div>
     </div>
   )
-}
-
-const addComma = (price: number) => {
-  let returnString = price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-  return returnString
 }
 
 // function useSettingSettlement(){
