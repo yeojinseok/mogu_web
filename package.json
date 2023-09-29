@@ -42,6 +42,7 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.11.0",
     "react-markdown": "^8.0.7",
+    "react-modal-sheet": "^2.0.0",
     "react-tabs": "^6.0.2",
     "recoil": "^0.7.7",
     "styled-components": "^6.0.7",
