@@ -21,6 +21,10 @@ export const Button = React.forwardRef<HTMLButtonElement, CustomButtonProps>(
       debounce(() => props.onClick?.(e), 100)
     }
 
-    return <ButtonStyled ref={ref} onClick={debounceCallback} />
+    return (
+      <ButtonStyled ref={ref} onClick={debounceCallback}>
+        {props.children}
+      </ButtonStyled>
+    )
   }
 )
