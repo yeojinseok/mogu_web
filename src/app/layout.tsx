@@ -30,9 +30,10 @@ export default async function RootLayout({
         <div className="flex-auto w-full h-full overflow-hidden bg-white max-w-screen-tablet">
           <StyledComponentsRegistry>
             <GlobalStyles />
-            <SnackbarProvider />
             <RecoilProvider>
-              <AuthContext session={session}>{children}</AuthContext>
+              <SnackbarProvider>
+                <AuthContext session={session}>{children}</AuthContext>
+              </SnackbarProvider>
             </RecoilProvider>
           </StyledComponentsRegistry>
         </div>

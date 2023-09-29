@@ -1,5 +1,10 @@
 'use client'
 import { SnackbarProvider as Provider } from 'notistack'
-export default function SnackbarProvider() {
-  return <Provider />
+import React from 'react'
+export default function SnackbarProvider({
+  children,
+}: {
+  children: React.ReactElement
+}) {
+  return <Provider autoHideDuration={1500}>{children}</Provider>
 }
