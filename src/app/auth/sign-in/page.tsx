@@ -8,7 +8,7 @@ export default async function SignIn(props: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
   return (
-    <div className="container flex items-center justify-center">
+    <div className="flex items-center justify-center ">
       <div className="items-center justify-center w-full gap-48 p-16 h-stack">
         <div className="relative items-center gap-16 h-stack">
           <Image src={svg} width={60} height={60} alt="mogu-icon" />

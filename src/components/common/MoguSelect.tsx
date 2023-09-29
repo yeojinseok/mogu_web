@@ -46,7 +46,7 @@ export default function MoguSelect({
       <div
         ref={iconRef}
         tabIndex={-1}
-        className="flex bg-lime-300 "
+        className="flex "
         onBlur={() => {
           setIsFocus(false)
         }}
