@@ -5,7 +5,7 @@ import {
   atom,
   selectorFamily,
 } from 'recoil'
-import { SettlementStageType } from '../../types/settlementStageType'
+import { SettlementStageType } from '../../types/settlementType'
 
 export const settlementStageListState = atom<SettlementStageType[]>({
   key: 'settlementStateList',

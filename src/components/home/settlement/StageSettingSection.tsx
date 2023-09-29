@@ -8,7 +8,7 @@ import {
   settlementTotalPriceState,
 } from '@/recoil/settlementStage'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { SettlementFriendsType } from '../../../../types/settlementStageType'
+import { SettlementFriendsType } from '../../../../types/settlementType'
 import { Select } from '@/components/common/Select'
 import { v4 as uuidv4 } from 'uuid'
 import { clamp } from '@toss/utils'
@@ -53,6 +53,7 @@ function TotalPrice() {
   return (
     <div className="mt-20">
       <Input2
+        inputSize="lg"
         placeholder="얼마를 정산할까요?"
         value={addComma(price)}
         onChange={e => {

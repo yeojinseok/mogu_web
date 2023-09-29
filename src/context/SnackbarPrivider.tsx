@@ -6,5 +6,15 @@ export default function SnackbarProvider({
 }: {
   children: React.ReactElement
 }) {
-  return <Provider autoHideDuration={1500}>{children}</Provider>
+  return (
+    <Provider
+      autoHideDuration={1500}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'center',
+      }}
+    >
+      {children}
+    </Provider>
+  )
 }
