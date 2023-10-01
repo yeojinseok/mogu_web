@@ -5,7 +5,7 @@ import { getSession } from 'next-auth/react'
 import qs from 'qs'
 
 export const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_ACLOSET_API,
+  baseURL: process.env.NEXT_PUBLIC_API,
   headers: {
     mode: 'cors',
     'Content-Type': 'application/json',

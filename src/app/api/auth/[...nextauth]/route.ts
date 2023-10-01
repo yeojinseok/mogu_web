@@ -1,8 +1,6 @@
-import { axiosInstance } from '@/axios/axiosInstance'
-import axios from 'axios'
+import axios, { isAxiosError } from 'axios'
 import NextAuth from 'next-auth'
 import type { AuthOptions } from 'next-auth'
-import { JWT } from 'next-auth/jwt'
 import jwt_decode from 'jwt-decode'
 
 import CredentialsProvider from 'next-auth/providers/credentials'
@@ -52,21 +50,49 @@ export const authOptions: AuthOptions = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        email: { label: 'Email', type: 'text' },
-        password: { label: 'Password', type: 'password' },
+        email: { type: 'text' },
+        password: { type: 'password' },
+        isSignUp: { type: 'text' },
+        nickname: { type: 'text' },
       },
       async authorize(credentials, req) {
-        console.log(credentials)
         if (typeof credentials !== 'undefined') {
-          const res = await axiosInstance
-            .post('/shops/users/sign-in', credentials)
-            .then(v => v.data)
-
-          console.log(res, credentials, '?')
-          if (typeof res !== 'undefined') {
-            return { ...res }
+          if (!credentials.isSignUp) {
+            try {
+              const res = await axios
+                .post(
+                  `${process.env.NEXT_PUBLIC_API}/authentication/login`,
+                  { email: credentials.email, password: credentials.password },
+                  {
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                  }
+                )
+                .then(v => v.data.data)
+              return res
+            } catch (err) {
+              if (isAxiosError(err)) {
+                throw new Error(err.response?.data.message)
+              }
+            }
           } else {
-            return null
+            try {
+              return await axios
+                .post(
+                  `${process.env.NEXT_PUBLIC_API}/authentication/register`,
+                  {
+                    email: credentials.email,
+                    password: credentials.password,
+                    nickname: credentials.nickname,
+                  }
+                )
+                .then(v => v.data.data)
+            } catch (err) {
+              if (isAxiosError(err)) {
+                throw new Error(err.response?.data.message)
+              }
+            }
           }
         } else {
           return null
