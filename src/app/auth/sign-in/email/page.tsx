@@ -6,7 +6,7 @@ import Header from '@/components/common/Header'
 
 import { signIn } from 'next-auth/react'
 import { Input } from '@/components/common/Input'
-import { ButtonStyled } from '@/components/common/Button'
+import { Button, ButtonStyled } from '@/components/common/Button'
 
 export default async function SignInEmail(props: {
   searchParams: { [key: string]: string | string[] | undefined }
@@ -20,7 +20,7 @@ export default async function SignInEmail(props: {
           onSubmit={async event => {
             const data = new FormData(event.currentTarget)
 
-            const result = await signIn('credentials', {
+            await signIn('credentials', {
               email: data.get('email') as string,
               password: data.get('password') as string,
               redirect: true,
@@ -28,20 +28,24 @@ export default async function SignInEmail(props: {
             })
           }}
         >
-          <div className="gap-24 p-16 pt-24 h-stack">
-            <div className="relative items-center gap-16 h-stack">
+          <div className="gap-24 p-16 pt-24 v-stack">
+            <div className="relative items-center gap-8 v-stack">
               <Image src={svg} width={44} height={44} alt="mogu-icon" />
               <div className=" title_body">{'Always Together'}</div>
             </div>
 
-            <div className="h-stack">
-              {/* <input name="csrfToken" type="hidden" defaultValue={csrfToken} /> */}
+            <div className="gap-8 v-stack">
               <Input name="email" placeholder="이메일" />
               <Input name="password" placeholder="비밀번호" type="password" />
             </div>
+            <div>
+              <div className="justify-center underline text-grey-700 h-stack">
+                회원가입 하기
+              </div>
+            </div>
           </div>
           <div className="p-16 footer">
-            <ButtonStyled type="submit">로그인</ButtonStyled>
+            <Button type="submit">로그인</Button>
           </div>
         </form>
       </div>

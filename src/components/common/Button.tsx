@@ -10,7 +10,7 @@ interface CustomButtonProps
 }
 
 export const ButtonStyled = styled.button`
-  ${tw`flex items-center justify-center w-full bg-lime-500 h-52 title_body`}
+  ${tw`flex items-center justify-center w-full bg-lime-500 h-52 title_body rounded-8`}
 `
 
 export const Button = React.forwardRef<HTMLButtonElement, CustomButtonProps>(
