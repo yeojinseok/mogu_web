@@ -25,7 +25,7 @@ export const Input2 = React.forwardRef<HTMLInputElement, CustomInputProps>(
           inputSize={props.inputSize ?? 'default'}
           ref={ref}
           {...props}
-          value={!props.value ? undefined : props.value}
+          value={props.value}
         />
       )
     }
@@ -36,7 +36,7 @@ export const Input2 = React.forwardRef<HTMLInputElement, CustomInputProps>(
           inputSize={props.inputSize ?? 'default'}
           ref={ref}
           {...props}
-          value={!props.value ? undefined : props.value}
+          value={props.value}
         />
       )
     }
@@ -45,7 +45,7 @@ export const Input2 = React.forwardRef<HTMLInputElement, CustomInputProps>(
         inputSize={props.inputSize ?? 'default'}
         ref={ref}
         {...props}
-        value={!props.value ? undefined : props.value}
+        value={props.value}
       />
     )
   }

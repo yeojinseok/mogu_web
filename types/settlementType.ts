@@ -11,3 +11,10 @@ export type SettlementFriendsType = {
   settlementPercent?: number
   price: number
 }
+
+export type SettlementInfoType = {
+  bankCode: string
+  accountName: string
+  accountNumber: string
+  message: string
+}

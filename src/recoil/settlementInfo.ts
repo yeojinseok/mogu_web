@@ -1,19 +1,12 @@
-import {
-  DefaultValue,
-  GetRecoilValue,
-  SetRecoilState,
-  atom,
-  selectorFamily,
-} from 'recoil'
-import { SettlementStageType } from '../../types/settlementType'
+import { atom } from 'recoil'
+import { SettlementInfoType } from '../../types/settlementType'
 
-export const settlementInfoState = atom<SettlementStageType[]>({
+export const settlementInfoState = atom<SettlementInfoType>({
   key: 'settlementInfo',
-  default: [
-    {
-      level: 1,
-      friends: [],
-      totalPrice: 0,
-    },
-  ],
+  default: {
+    bankCode: '',
+    accountName: '',
+    accountNumber: '',
+    message: '',
+  },
 })
