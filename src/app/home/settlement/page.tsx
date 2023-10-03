@@ -23,6 +23,7 @@ export default function SettlementPage(props: {
             <StageSettingSection />
           </div>
           <div className="p-16 footer">
+            {/* FIXME: nextjs setSearchParams 어떻게 다루는지 찾아보고 수정 */}
             <Link href={homeRoute.settlement('2')}>
               <Button>다음</Button>
             </Link>
@@ -31,13 +32,7 @@ export default function SettlementPage(props: {
       ) : (
         <>
           <Header />
-
           <SettlementInfoSection />
-          <div className="p-16 footer">
-            <Link href={homeRoute.settlement('2')}>
-              <Button>다음</Button>
-            </Link>
-          </div>
         </>
       )}
     </div>

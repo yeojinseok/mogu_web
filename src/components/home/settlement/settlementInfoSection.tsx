@@ -11,8 +11,22 @@ import { BANK_CODE_LIST } from '@/consts/bankCodeList'
 import { hangulIncludes } from '@toss/hangul'
 import { getBackTitleFromCode } from '@/utils/helper'
 import { 계좌번호_유효성_검사 } from '@/consts/regex'
+import Link from 'next/link'
+import { Button } from '@/components/common/Button'
+import { homeRoute } from '@/router/home'
+import { useMutation } from '@tanstack/react-query'
+import { axiosInstance } from '@/axios/axiosInstance'
+import { useSession } from 'next-auth/react'
 
 export default function SettlementInfoSection() {
+  const session = useSession()
+
+  const { mutate } = useMutation(data =>
+    axiosInstance
+      .post(`/settlements/users/${session.data?.user?.userID}`, {})
+      .then(v => v.data)
+  )
+
   const [settlementInfo, setSettlementInfo] =
     useRecoilState(settlementInfoState)
 
@@ -83,6 +97,15 @@ export default function SettlementInfoSection() {
         </div>
       </div>
       <BankCodeBottomSheet isOpen={isOpen} closeSheet={closeSheet} />
+      <div className="p-16 footer">
+        <Button
+          onClick={() => {
+            // mutate()
+          }}
+        >
+          정산
+        </Button>
+      </div>
     </>
   )
 }

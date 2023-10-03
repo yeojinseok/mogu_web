@@ -18,3 +18,5 @@ export type SettlementInfoType = {
   accountNumber: string
   message: string
 }
+
+// export type SettlementType =
