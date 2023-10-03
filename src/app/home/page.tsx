@@ -1,5 +1,5 @@
 import Header from '@/components/home/Header'
-import TabPage from '@/components/home/TabPage'
+import TabPage from '@/components/home/Tab/TabPage'
 
 import React from 'react'
 

@@ -1,8 +1,10 @@
 'use client'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import { HStack, VStack } from '../common/Stack'
+import { HStack, VStack } from '../../common/Stack'
 import { useState } from 'react'
 import tw from 'twin.macro'
+import ClubTabPage from './ClubTabPage'
+import AccountBookPage from './AccountBookPage'
 
 export default function TabPage() {
   const [currentTabIndex, setCurrentTabIndex] = useState(0)
@@ -36,10 +38,10 @@ export default function TabPage() {
       </TabList>
 
       <TabPanel>
-        <h2>Any content 1</h2>
+        <ClubTabPage />
       </TabPanel>
       <TabPanel>
-        <h2>Any content 2</h2>
+        <AccountBookPage />
       </TabPanel>
     </Tabs>
   )
