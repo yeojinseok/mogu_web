@@ -8,6 +8,7 @@ import {
   useSuspenseGetSettlementList,
 } from '@/hook/react-query/settlement/useGetSettlementList'
 import { settlementFilterValue } from '@/recoil/settlementFilterValue'
+import { Date } from '@/utils/date'
 import { addComma } from '@/utils/helper'
 import { useRecoilValue } from 'recoil'
 
@@ -40,7 +41,9 @@ function ListItem({ settlement }: { settlement: SettlementResponseType }) {
         </div>
       </HStack>
       <HStack className="gap-11">
-        <div className=" body_default text-grey-500">{settlement.date}</div>
+        <div className=" body_default text-grey-500">
+          {Date.format(settlement.date)}
+        </div>
         <div className=" body_default text-grey-500">
           {SETTLEMENT_STATUS_MAP[settlement.status]}
         </div>
