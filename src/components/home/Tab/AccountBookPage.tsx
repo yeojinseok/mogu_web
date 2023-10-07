@@ -2,15 +2,17 @@
 import { Chip } from '@/components/common/Chip'
 import { HStack, VStack } from '@/components/common/Stack'
 import { settlementFilterValue } from '@/recoil/settlementFilterValue'
+import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import Sheet, { SheetRef } from 'react-modal-sheet'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import SettlementListComponent from './SettlementListComponent'
 
 export default function AccountBookPage() {
   const [isOpen, setIsOpen] = useState(false)
 
-  const [filterValue, setFilterValue] = useRecoilState(settlementFilterValue)
+  const filterValue = useRecoilValue(settlementFilterValue)
 
   const startDate = filterValue.startDate.format('YYYY-MM-DD')
   const endDate = filterValue.endDate.format('YYYY-MM-DD')
@@ -25,8 +27,8 @@ export default function AccountBookPage() {
 
   return (
     <>
-      <VStack className="px-16">
-        <HStack className="justify-between py-20">
+      <VStack className="h-full">
+        <HStack className="justify-between px-16 py-20">
           <div className="body_large">
             {startDate}~{endDate}
           </div>
@@ -34,6 +36,9 @@ export default function AccountBookPage() {
             조회설정
           </div>
         </HStack>
+        <Suspense fallback={<div>loading...</div>}>
+          <SettlementListComponent />
+        </Suspense>
       </VStack>
       <FilterBottomSheet isOpen={isOpen} closeSheet={closeSheet} />
     </>
@@ -100,10 +105,6 @@ function FilterBottomSheet({
                   />
                 ))}
               </HStack>
-
-              <VStack>
-                <div>정산 타입</div>
-              </VStack>
             </VStack>
           </Sheet.Scroller>
         </Sheet.Content>

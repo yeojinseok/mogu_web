@@ -2,25 +2,13 @@
 
 // nextauth.d.ts
 import { DefaultSession, DefaultUser } from 'next-auth'
-export enum Role {
-  user = 'user',
-  admin = 'admin',
-}
-interface IUser extends DefaultUser {
-  /**
-   * Role of user
-   */
-  role?: Role
-  /**
-   * Field to check whether a user has a subscription
-   */
-  subscribed?: boolean
-}
+
+interface IUser extends DefaultUser {}
 declare module 'next-auth' {
   interface User extends IUser {
     accessToken?: string
     refreshToken?: string
-    userID?: string
+    userID: string
   }
   interface Session {
     user?: User

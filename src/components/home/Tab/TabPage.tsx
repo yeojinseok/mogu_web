@@ -10,6 +10,7 @@ export default function TabPage() {
   const [currentTabIndex, setCurrentTabIndex] = useState(0)
   return (
     <Tabs
+      className={'h-full'}
       defaultIndex={currentTabIndex}
       onSelect={index => setCurrentTabIndex(index)}
     >
@@ -40,7 +41,7 @@ export default function TabPage() {
       <TabPanel>
         <ClubTabPage />
       </TabPanel>
-      <TabPanel>
+      <TabPanel className={'h-full'}>
         <AccountBookPage />
       </TabPanel>
     </Tabs>

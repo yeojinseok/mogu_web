@@ -8,6 +8,7 @@ import { authOptions } from './api/auth/[...nextauth]/route'
 import AuthContext from '@/context/AuthContext'
 import RecoilProvider from '@/context/RecoilProvider'
 import SnackbarProvider from '@/context/SnackbarPrivider'
+import ReactQueryProvider from '@/context/ReactQueryProvider'
 
 export const metadata: Metadata = {
   title: 'Twin example',
@@ -30,11 +31,13 @@ export default async function RootLayout({
         <div className="flex-auto w-full h-full overflow-hidden bg-white max-w-screen-tablet">
           <StyledComponentsRegistry>
             <GlobalStyles />
-            <RecoilProvider>
-              <SnackbarProvider>
-                <AuthContext session={session}>{children}</AuthContext>
-              </SnackbarProvider>
-            </RecoilProvider>
+            <ReactQueryProvider>
+              <RecoilProvider>
+                <SnackbarProvider>
+                  <AuthContext session={session}>{children}</AuthContext>
+                </SnackbarProvider>
+              </RecoilProvider>
+            </ReactQueryProvider>
           </StyledComponentsRegistry>
         </div>
       </body>

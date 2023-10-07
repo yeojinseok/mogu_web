@@ -5,7 +5,7 @@ import React from 'react'
 
 export default async function Home() {
   return (
-    <div className="">
+    <div className="h-full ">
       <Header />
       <TabPage />
     </div>
