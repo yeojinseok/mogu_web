@@ -1,4 +1,5 @@
 export type SettlementStageType = {
+  id?: number
   level: number
   totalPrice: number
   participants: SettlementFriendsType[]
@@ -10,6 +11,7 @@ export type SettlementFriendsType = {
   settlementType?: string
   settlementPercent?: number
   price: number
+  priority: number
 }
 
 export type SettlementInfoType = {

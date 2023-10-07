@@ -8,7 +8,7 @@ import {
   settlementTotalPriceState,
 } from '@/recoil/settlementStage'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { SettlementFriendsType } from '../../../../types/settlementType'
+
 import { Select } from '@/components/common/Select'
 
 import { clamp } from '@toss/utils'
@@ -92,7 +92,9 @@ function FriendListHeader() {
 
   const addFriends = () => {
     setFriends(prev =>
-      prev.concat([{ id: generateSecureID(), name: '', price: 0 }])
+      prev.concat([
+        { id: generateSecureID(), name: '', price: 0, priority: prev.length },
+      ])
     )
   }
   return (
