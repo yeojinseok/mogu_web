@@ -12,7 +12,7 @@ export const settlementStageListState = atom<SettlementStageType[]>({
   default: [
     {
       level: 1,
-      friends: [],
+      participants: [],
       totalPrice: 0,
     },
   ],
@@ -77,9 +77,9 @@ const createSettlementStageStateSpecificKeySelector = <
 export const settlementFriendFromID = selectorFamily({
   key: 'settlementFriend',
   get:
-    ({ level, id }: { level: number; id: string }) =>
+    ({ level, id }: { level: number; id: number }) =>
     ({ get }) => {
-      const value = get(settlementStageState(level)).friends.find(
+      const value = get(settlementStageState(level)).participants.find(
         v => v.id === id
       )
       if (!value) {
@@ -88,7 +88,7 @@ export const settlementFriendFromID = selectorFamily({
       return value
     },
   set:
-    ({ level, id }: { level: number; id: string }) =>
+    ({ level, id }: { level: number; id: number }) =>
     ({ set }, newValue) => {
       set(settlementStageListState, prev => {
         if (newValue instanceof DefaultValue) {
@@ -98,14 +98,14 @@ export const settlementFriendFromID = selectorFamily({
         const prevList = [...prev]
         const index = prevList.findIndex(v => v.level === level)
 
-        const prevFriendsList = [...prevList[index].friends]
+        const prevFriendsList = [...prevList[index].participants]
         const changeFriendIndex = prevFriendsList.findIndex(v => v.id === id)
 
         prevFriendsList.splice(changeFriendIndex, 1, newValue)
 
         prevList.splice(index, 1, {
           ...prevList[index],
-          friends: prevFriendsList,
+          participants: prevFriendsList,
         })
 
         return prevList
@@ -120,7 +120,7 @@ export const settlementLevelState =
   createSettlementStageStateSpecificKeySelector('level')
 
 export const settlementFriendsState =
-  createSettlementStageStateSpecificKeySelector('friends')
+  createSettlementStageStateSpecificKeySelector('participants')
 
 export const currentSelectedStageLevelStage = atom<number>({
   key: 'currentSelectedStageLevelStage',

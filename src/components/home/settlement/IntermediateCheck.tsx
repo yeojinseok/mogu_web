@@ -18,7 +18,7 @@ export default function IntermediateCheck() {
   const settlementStageList = useRecoilValue(settlementStageListState)
 
   const isExistsSettlementList = settlementStageList.reduce(
-    (acc, curr) => curr.friends.length > 0,
+    (acc, curr) => curr.participants.length > 0,
     false
   )
 
@@ -107,16 +107,16 @@ function SettlementContent() {
   const friendNameList = isAllStageFilter
     ? [
         ...settlementStageList.reduce((acc, curr) => {
-          curr.friends.forEach(friend => acc.add(friend.name))
+          curr.participants.forEach(friend => acc.add(friend.name))
           return acc
         }, new Set<string>()),
       ]
-    : currentStage?.friends.map(v => v.name) ?? []
+    : currentStage?.participants.map(v => v.name) ?? []
 
   const getFriendInfoFromName = (name: string) => {
     return compact(
       settlementStageList.map(v => {
-        const friend = v.friends.find(v => v.name === name)
+        const friend = v.participants.find(v => v.name === name)
         if (!friend) {
           return
         }
