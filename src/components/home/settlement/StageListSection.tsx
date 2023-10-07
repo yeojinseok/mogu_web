@@ -47,7 +47,7 @@ function AddStageChip() {
     setStageList(prev =>
       prev.concat({
         level: currentSelectedStageLevel + 1,
-        friends: [],
+        participants: [],
         totalPrice: 0,
       })
     )

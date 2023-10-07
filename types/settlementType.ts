@@ -1,11 +1,11 @@
 export type SettlementStageType = {
   level: number
   totalPrice: number
-  friends: SettlementFriendsType[]
+  participants: SettlementFriendsType[]
 }
 
 export type SettlementFriendsType = {
-  id: string
+  id: number
   name: string
   settlementType?: string
   settlementPercent?: number

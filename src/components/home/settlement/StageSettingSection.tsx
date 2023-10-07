@@ -10,13 +10,14 @@ import {
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { SettlementFriendsType } from '../../../../types/settlementType'
 import { Select } from '@/components/common/Select'
-import { v4 as uuidv4 } from 'uuid'
+
 import { clamp } from '@toss/utils'
 import { forEach, isNaN } from 'lodash'
 import MoguSelect from '@/components/common/MoguSelect'
 import tw from 'twin.macro'
 import { useEffect } from 'react'
 import { addComma } from '@/utils/helper'
+import { generateSecureID } from '@/utils/generateSecureID'
 
 const SETTLEMENT_STATE_LIST = [
   {
@@ -90,7 +91,9 @@ function FriendListHeader() {
   )
 
   const addFriends = () => {
-    setFriends(prev => prev.concat([{ id: uuidv4(), name: '', price: 0 }]))
+    setFriends(prev =>
+      prev.concat([{ id: generateSecureID(), name: '', price: 0 }])
+    )
   }
   return (
     <div className="items-center justify-between h-stack">
@@ -125,7 +128,7 @@ function FriendList() {
   )
 }
 
-function FriendItem({ id }: { id: string }) {
+function FriendItem({ id }: { id: number }) {
   const currentSelectedStageLevel = useRecoilValue(
     currentSelectedStageLevelStage
   )
