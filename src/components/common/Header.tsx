@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import backIcon from '../../../public/backIcon.svg'
 import { useRouter } from 'next/navigation'
+import { signOut } from 'next-auth/react'
 
 export default function Header({ title }: { title?: string }) {
   const router = useRouter()

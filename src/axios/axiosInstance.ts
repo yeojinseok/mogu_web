@@ -1,7 +1,7 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import axios, { AxiosError } from 'axios'
 import { getServerSession } from 'next-auth'
-import { getSession } from 'next-auth/react'
+import { getSession, signOut } from 'next-auth/react'
 import qs from 'qs'
 
 export const axiosInstance = axios.create({
@@ -20,6 +20,10 @@ export const axiosInstance = axios.create({
   },
 })
 
+axiosInstance.interceptors.request.use(async request => {
+  return request
+})
+
 axiosInstance.interceptors.response.use(
   response => {
     return response
@@ -32,7 +36,10 @@ axiosInstance.interceptors.response.use(
       //@ts-ignore
       const accessToken = token?.accessToken as string
       if (!accessToken) {
-        window.location.href = '/sign-in'
+        signOut({
+          redirect: true,
+          callbackUrl: '/',
+        })
       }
       setAccessToken(accessToken)
       if (originalRequest != null) {

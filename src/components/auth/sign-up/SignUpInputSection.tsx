@@ -28,12 +28,11 @@ export default function SignUpInputSection() {
           await signIn('credentials', {
             nickname: data.get('nickname') as string,
             isSignUp: true,
-            redirect: true,
+            redirect: false,
             email: data.get('email') as string,
             password: data.get('password') as string,
             callbackUrl: callbackUrl as string,
           }).then(res => {
-            console.log(res)
             if (!res?.error) {
               router.push(callbackUrl ?? '/')
             } else {

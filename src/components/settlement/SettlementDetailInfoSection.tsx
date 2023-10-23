@@ -7,7 +7,7 @@ import { useSuspenseGetSettlementDetail } from '@/hook/react-query/settlement/us
 import { usePathname, useRouter } from 'next/navigation'
 import { addComma, getBackTitleFromCode } from '@/utils/helper'
 import { Collapsible } from '../common/Collapsible'
-import { useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import {
   currentSelectedStageLevelStage,
@@ -18,28 +18,39 @@ import { Chip } from '../common/Chip'
 import { formatToKRW } from '@toss/utils'
 import { compact } from 'lodash'
 
+import Sheet, { SheetRef } from 'react-modal-sheet'
+import { Input2 } from '../common/Input2'
+import { BANK_CODE_LIST } from '@/consts/bankCodeList'
+import { hangulIncludes } from '@toss/hangul'
+import Image from 'next/image'
+
 export default function SettlementDetailInfoSection() {
-  const router = useRouter()
-  const path = usePathname()
+  const [isOpenEditSheet, setIsOpenEditSheet] = useState(false)
 
-  const settlementID = Number(path.split('/').slice(-1)[0] ?? '0')
-
-  const { data: settlement } = useSuspenseGetSettlementDetail(settlementID)
-
-  useEffect(() => {})
   return (
-    <VStack className="px-16">
-      <HStack className="items-center justify-between ">
-        <Typography twStyle={tw`title_screen`}>정산내역</Typography>
-        <Typography twStyle={tw`underline title_body`}>
-          정산 내역 수정
-        </Typography>
-      </HStack>
-      <AccountSection />
-      <StageList />
-      <PriceSection />
-      <FriendsList />
-    </VStack>
+    <>
+      <VStack className="px-16">
+        <HStack className="items-center justify-between ">
+          <Typography twStyle={tw`title_screen`}>정산내역</Typography>
+          <Typography
+            onClick={() => setIsOpenEditSheet(true)}
+            twStyle={tw`underline title_body`}
+          >
+            정산 내역 수정
+          </Typography>
+        </HStack>
+        <Suspense fallback={<>loading...</>}>
+          <AccountSection />
+          <StageList />
+          <PriceSection />
+          <FriendsList />
+        </Suspense>
+      </VStack>
+      <SettlementEditBottomSheet
+        isOpen={isOpenEditSheet}
+        closeSheet={() => setIsOpenEditSheet(false)}
+      />
+    </>
   )
 }
 
@@ -242,5 +253,129 @@ function FriendsList() {
         ))}
       </VStack>
     </VStack>
+  )
+}
+
+function SettlementEditBottomSheet({
+  isOpen,
+  closeSheet,
+}: {
+  isOpen: boolean
+  closeSheet: () => void
+}) {
+  const ref = React.useRef<SheetRef>()
+
+  const path = usePathname()
+
+  const settlementID = Number(path.split('/').slice(-1)[0] ?? '0')
+
+  const { data: settlement } = useSuspenseGetSettlementDetail(settlementID)
+
+  const [editSettlement, setEditSettlement] = useState(settlement)
+  const [open, setOpen] = useState(false)
+
+  return (
+    <Sheet
+      ref={ref}
+      snapPoints={[0.9, 0.6]}
+      isOpen={isOpen}
+      onClose={closeSheet}
+      initialSnap={1}
+    >
+      <Sheet.Container>
+        <Sheet.Header />
+        <Sheet.Content style={{ paddingBottom: ref.current?.y }}>
+          <Sheet.Scroller>
+            <VStack className="gap-24 px-20">
+              <VStack>
+                <Typography twStyle={tw` title_subsection`}>
+                  계좌정보
+                </Typography>
+                <Input2
+                  onClick={e => {
+                    e.preventDefault()
+                    setOpen(true)
+                  }}
+                  value={getBackTitleFromCode(editSettlement.data.bankCode)}
+                  placeholder="은행을 선택해주세요"
+                />
+                <Input2
+                  value={editSettlement.data.accountNumber}
+                  inputSize={'default'}
+                  placeholder="계좌번호"
+                />
+              </VStack>
+
+              <VStack>
+                <Typography twStyle={tw` title_subsection`}>메시지</Typography>
+                <Input2
+                  value={editSettlement.data.message}
+                  inputSize={'default'}
+                  placeholder="메시지"
+                />
+              </VStack>
+            </VStack>
+          </Sheet.Scroller>
+        </Sheet.Content>
+      </Sheet.Container>
+      <Sheet.Backdrop onTap={() => closeSheet()} />
+      <BankCodeBottomSheet isOpen={open} closeSheet={() => setOpen(false)} />
+    </Sheet>
+  )
+}
+
+function BankCodeBottomSheet({
+  isOpen,
+  closeSheet,
+}: {
+  isOpen: boolean
+  closeSheet: () => void
+}) {
+  const [searchKeyword, setSearchKeyword] = useState('')
+  const ref = React.useRef<SheetRef>()
+
+  return (
+    <Sheet
+      ref={ref}
+      snapPoints={[0.9, 0.6]}
+      isOpen={isOpen}
+      onClose={closeSheet}
+      initialSnap={1}
+    >
+      <Sheet.Container>
+        <Sheet.Header />
+        <Sheet.Content style={{ paddingBottom: ref.current?.y }}>
+          <Sheet.Scroller>
+            <div className="gap-32 px-20 v-stack">
+              <div className=" v-stack">
+                <div className=" title_subsection">은행</div>
+                <Input2
+                  value={searchKeyword}
+                  onChange={e => setSearchKeyword(e.target.value)}
+                  placeholder="은행을 검색해보세요"
+                />
+              </div>
+              <div className="grid grid-cols-2 pb-20 gap-y-20">
+                {BANK_CODE_LIST.filter(bank =>
+                  hangulIncludes(bank.title, searchKeyword)
+                ).map(v => (
+                  <div
+                    onClick={() => {
+                      // setSettlementInfo(prev => ({ ...prev, bankCode: v.code }))
+                      closeSheet()
+                    }}
+                    className="items-center h-stack gap-x-8"
+                  >
+                    {v.title}
+                    <Image alt={v.title} width={20} height={20} src={v.path} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Sheet.Scroller>
+        </Sheet.Content>
+      </Sheet.Container>
+      <Sheet.Backdrop onTap={() => closeSheet()} />
+    </Sheet>
   )
 }
