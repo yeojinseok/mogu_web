@@ -8,10 +8,10 @@ declare module 'next-auth' {
   interface User extends IUser {
     accessToken?: string
     refreshToken?: string
-    userID: string
+    userId: number
   }
   interface Session {
-    user?: User
+    userId: number
     accessToken?: string
     refreshToken?: string
   }
@@ -20,5 +20,6 @@ declare module 'next-auth/jwt' {
   interface JWT extends IUser {
     accessToken?: string
     refreshToken?: string
+    userID?: number
   }
 }

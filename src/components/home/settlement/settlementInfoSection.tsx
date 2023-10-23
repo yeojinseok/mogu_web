@@ -4,7 +4,7 @@ import { Input } from '@/components/common/Input'
 import { Input2 } from '@/components/common/Input2'
 import { settlementInfoState } from '@/recoil/settlementInfo'
 import React, { useEffect, useRef, useState } from 'react'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import Sheet, { SheetRef } from 'react-modal-sheet'
 import Image from 'next/image'
 import { BANK_CODE_LIST } from '@/consts/bankCodeList'
@@ -17,18 +17,36 @@ import { homeRoute } from '@/router/home'
 import { useMutation } from '@tanstack/react-query'
 import { axiosInstance } from '@/axios/axiosInstance'
 import { useSession } from 'next-auth/react'
+import { settlementStageListState } from '@/recoil/settlementStage'
+import { SettlementFriendsType } from '../../../../types/settlementType'
+
+type CreateSettlementType = {
+  bankCode: string
+  accountName: string
+  accountNumber: string
+  message: string
+  userId: number
+  settlementImages?: string[]
+  settlementStage: {
+    level: number
+    totalPrice: number
+    participants: SettlementFriendsType[]
+  }[]
+}
 
 export default function SettlementInfoSection() {
   const session = useSession()
 
-  const { mutate } = useMutation(data =>
+  const { mutate } = useMutation((data: CreateSettlementType) =>
     axiosInstance
-      .post(`/settlements/users/${session.data?.user?.userID}`, {})
+      .post(`/settlements/users/${session.data?.userId}`, data)
       .then(v => v.data)
   )
 
   const [settlementInfo, setSettlementInfo] =
     useRecoilState(settlementInfoState)
+
+  const stageList = useRecoilValue(settlementStageListState)
 
   const [isOpen, setIsOpen] = useState(false)
 
@@ -100,7 +118,14 @@ export default function SettlementInfoSection() {
       <div className="p-16 footer">
         <Button
           onClick={() => {
-            // mutate()
+            mutate({
+              ...settlementInfo,
+              settlementStage: [...stageList],
+              userId: session.data?.userId ?? 0,
+              // totalPrice: 0,
+              // userId: 0,
+              // settlementStage: [],
+            })
           }}
         >
           정산

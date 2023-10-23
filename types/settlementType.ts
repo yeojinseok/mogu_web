@@ -9,7 +9,7 @@ export type SettlementFriendsType = {
   id: number
   name: string
   settlementType?: string
-  settlementPercent?: number
+  percentage?: number
   price: number
   priority: number
 }

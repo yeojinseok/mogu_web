@@ -25,6 +25,7 @@ function StageList() {
     <>
       {stageList.map(stage => (
         <Chip
+          variants="default"
           key={stage.level}
           onClick={() => {
             setCurrentSelectedStageLevel(stage.level)
@@ -53,5 +54,5 @@ function AddStageChip() {
     )
   }
 
-  return <Chip title="차슈 추가" onClick={addStage} />
+  return <Chip title="차수 추가" onClick={addStage} variants="default" />
 }

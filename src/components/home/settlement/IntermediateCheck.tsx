@@ -26,7 +26,6 @@ export default function IntermediateCheck() {
 
   const openSheet = () => {
     if (!isExistsSettlementList) {
-      console.log('??')
       enqueueSnackbar('확인할 내역이 없어요.', { variant: 'default' })
       return
     }

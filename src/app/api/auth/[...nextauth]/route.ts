@@ -20,7 +20,7 @@ export const authOptions: AuthOptions = {
         session.accessToken = token.accessToken
         session.refreshToken = token.refreshToken
         //@ts-ignore
-        session.id = token.id
+        session.userId = token.userID
       }
 
       return session
@@ -30,7 +30,7 @@ export const authOptions: AuthOptions = {
         token.accessToken = user.accessToken
 
         token.refreshToken = user.refreshToken
-        token.id = user.userID ?? ''
+        token.userID = user.userId
       }
 
       const now = Date.now() / 1000
@@ -78,6 +78,7 @@ export const authOptions: AuthOptions = {
             }
           } else {
             try {
+              console.log(credentials)
               return await axios
                 .post(
                   `${process.env.NEXT_PUBLIC_API}/authentication/register`,
@@ -87,7 +88,10 @@ export const authOptions: AuthOptions = {
                     nickname: credentials.nickname,
                   }
                 )
-                .then(v => v.data.data)
+                .then(v => {
+                  console.log(v.data.data, '???')
+                  return v.data.data
+                })
             } catch (err) {
               if (isAxiosError(err)) {
                 throw new Error(err.response?.data.message)

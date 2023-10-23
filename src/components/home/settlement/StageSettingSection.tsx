@@ -159,7 +159,7 @@ function FriendItem({ id }: { id: number }) {
 
   const remainingPercent = friends.reduce((prev, curr) => {
     if (curr.settlementType === '퍼센트' && curr.id !== id) {
-      return prev - (curr.settlementPercent ?? 0)
+      return prev - (curr.percentage ?? 0)
     }
     return prev
   }, 100)
@@ -177,8 +177,7 @@ function FriendItem({ id }: { id: number }) {
       case '퍼센트': {
         setFriend(prev => ({
           ...prev,
-          price:
-            (특정금액_빼고_남은_금액 * (prev.settlementPercent ?? 0)) / 100,
+          price: (특정금액_빼고_남은_금액 * (prev.percentage ?? 0)) / 100,
         }))
         break
       }
@@ -225,7 +224,7 @@ function FriendItem({ id }: { id: number }) {
           <div className="flex items-center justify-between w-104">
             {friend.settlementType === '퍼센트' ? (
               <Input2
-                value={friend.settlementPercent ?? 0}
+                value={friend.percentage ?? 0}
                 onChange={e => {
                   const { value } = e.target
 
@@ -237,7 +236,7 @@ function FriendItem({ id }: { id: number }) {
 
                   setFriend(prev => ({
                     ...prev,
-                    settlementPercent: percent,
+                    percentage: percent,
                     price: (특정금액_빼고_남은_금액 * percent) / 100,
                   }))
                 }}
