@@ -39,18 +39,18 @@ export type SettlementListRequestType = {
 
 type QueryOptions = UseAxiosQueryOptions<
   SettlementListResponseType,
-  [string, { userID: string } & SettlementListRequestType]
+  [string, { userID: number } & SettlementListRequestType]
 >
 
 const queryFn: ExtractQueryFunction<QueryOptions> = async ({ queryKey }) => {
   const [key, { userID, ...request }] = queryKey
-  // return axiosInstance
-  //   .get<SettlementListResponseType>(`/settlements/users/${userID}`, {
-  //     params: request,
-  //   })
-  //   .then(v => v.data)
+  return axiosInstance
+    .get<SettlementListResponseType>(`/settlements/users/${userID}`, {
+      params: request,
+    })
+    .then(v => v.data)
 
-  return mockData
+  // return mockData
 }
 
 /**
@@ -63,7 +63,7 @@ export function useGetSettlementList(
 ) {
   const user = useUser()
   return useQuery(
-    [settlementQueryKey, { userID: user.userID, ...request }],
+    [settlementQueryKey, { userID: user.userId, ...request }],
     queryFn,
     {
       ...option,
@@ -81,7 +81,7 @@ export function useSuspenseGetSettlementList(
 ) {
   const user = useUser()
   return useSuspenseQuery(
-    [settlementQueryKey, { userID: user.userID, ...request }],
+    [settlementQueryKey, { userID: user.userId, ...request }],
     queryFn,
     {
       ...option,

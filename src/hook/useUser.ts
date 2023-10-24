@@ -9,8 +9,8 @@ export default function useUser() {
   const session = useSession()
 
   const user = React.useMemo(() => {
-    return session.data?.user
-  }, [session.data?.user])
+    return session.data
+  }, [session.data])
 
   if (!user) {
     signOut()
