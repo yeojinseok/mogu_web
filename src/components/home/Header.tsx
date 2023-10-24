@@ -8,7 +8,10 @@ export default function Header() {
     <>
       <div className="gap-16 p-16 v-stack ">
         <div className="flex justify-end">
-          <span className="w-32 h-32 rounded-100 bg-grey-50" />
+          <Link
+            className="w-32 h-32 rounded-100 bg-grey-50"
+            href={'/mypage'}
+          ></Link>
         </div>
         <Link href={'/home/settlement'}>
           <button className="flex items-center justify-between w-full p-16 rounded-8 h-60 bg-lime-500">
