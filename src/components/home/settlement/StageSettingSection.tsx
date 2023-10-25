@@ -18,21 +18,7 @@ import tw from 'twin.macro'
 import { useEffect } from 'react'
 import { addComma } from '@/utils/helper'
 import { generateSecureID } from '@/utils/generateSecureID'
-
-const SETTLEMENT_STATE_LIST = [
-  {
-    value: '더치페이',
-    label: '더치페이',
-  },
-  {
-    value: '특정금액',
-    label: '특정금액',
-  },
-  {
-    value: '퍼센트',
-    label: '퍼센트 %',
-  },
-]
+import { SETTLEMENT_STATE_LIST } from '@/consts/data'
 
 export default function StageSettingSection() {
   return (
@@ -93,7 +79,12 @@ function FriendListHeader() {
   const addFriends = () => {
     setFriends(prev =>
       prev.concat([
-        { id: generateSecureID(), name: '', price: 0, priority: prev.length },
+        {
+          id: generateSecureID(),
+          name: '',
+          price: 0,
+          priority: prev.length + 1,
+        },
       ])
     )
   }
@@ -144,28 +135,28 @@ function FriendItem({ id }: { id: number }) {
   )
 
   const 특정금액_빼고_남은_금액 = friends.reduce((prev, curr) => {
-    if (curr.settlementType === '특정금액' && curr.id !== id) {
+    if (curr.settlementType === 'SPECIFIC_PRICE' && curr.id !== id) {
       return prev - curr.price
     }
     return prev
   }, totalPrice)
 
   const 퍼센트금액_빼고_남은_금액 = friends.reduce((prev, curr) => {
-    if (curr.settlementType === '퍼센트' && curr.id !== id) {
+    if (curr.settlementType === 'PERCENT' && curr.id !== id) {
       return prev - curr.price
     }
     return prev
   }, 특정금액_빼고_남은_금액)
 
   const remainingPercent = friends.reduce((prev, curr) => {
-    if (curr.settlementType === '퍼센트' && curr.id !== id) {
+    if (curr.settlementType === 'PERCENT' && curr.id !== id) {
       return prev - (curr.percentage ?? 0)
     }
     return prev
   }, 100)
 
   const friendsLength = friends.filter(
-    v => v.settlementType === '더치페이'
+    v => v.settlementType === 'DUTCH_PAY'
   ).length
 
   const [friend, setFriend] = useRecoilState(
@@ -174,26 +165,26 @@ function FriendItem({ id }: { id: number }) {
 
   useEffect(() => {
     switch (friend.settlementType) {
-      case '퍼센트': {
+      case 'PERCENT': {
         setFriend(prev => ({
           ...prev,
           price: (특정금액_빼고_남은_금액 * (prev.percentage ?? 0)) / 100,
         }))
         break
       }
-      case '특정금액': {
+      case 'SPECIFIC_PRICE': {
         setFriend(prev => ({
           ...prev,
           price: clamp(Number(prev.price), 0, 특정금액_빼고_남은_금액),
         }))
         break
       }
-      case '더치페이': {
+      case 'DUTCH_PAY': {
         setFriend(prev => ({
           ...prev,
           price:
             퍼센트금액_빼고_남은_금액 /
-            friends.filter(v => v.settlementType === '더치페이').length,
+            friends.filter(v => v.settlementType === 'DUTCH_PAY').length,
         }))
         break
       }
@@ -222,7 +213,7 @@ function FriendItem({ id }: { id: number }) {
           />
 
           <div className="flex items-center justify-between w-104">
-            {friend.settlementType === '퍼센트' ? (
+            {friend.settlementType === 'PERCENT' ? (
               <Input2
                 value={friend.percentage ?? 0}
                 onChange={e => {
@@ -249,7 +240,9 @@ function FriendItem({ id }: { id: number }) {
                 css={friend.settlementType ? undefined : tw`text-grey-100`}
                 className=" title_body"
               >
-                {friend.settlementType ?? '타입선택'}
+                {SETTLEMENT_STATE_LIST.find(
+                  v => v.value === friend.settlementType
+                )?.label ?? '타입선택'}
               </div>
             )}
 
@@ -263,7 +256,7 @@ function FriendItem({ id }: { id: number }) {
         </div>
         <div className="items-center h-stack">
           <Input2
-            disabled={friend.settlementType !== '특정금액'}
+            disabled={friend.settlementType !== 'SPECIFIC_PRICE'}
             value={addComma(friend.price)}
             onChange={e => {
               const { value } = e.target
@@ -304,18 +297,18 @@ function FriendItem({ id }: { id: number }) {
 //     setSettlement(prev => {
 //       let settlementPrice = prev.totalPrice
 
-//       forEach(prev.friends.filter(v => v.settlementType === '특정금액'), v => {
+//       forEach(prev.friends.filter(v => v.settlementType === 'SPECIFIC_PRICE'), v => {
 //         settlement.totalPrice - v.price
 //       })
 
-//       const percentFriends = prev.friends.filter(v => v.settlementType === '퍼센트').map(friend => {
+//       const percentFriends = prev.friends.filter(v => v.settlementType === 'PERCENT').map(friend => {
 //         return {
 //           ...friend,
 //           'price': settlementPrice *
 //         }
 //       })
 
-//       const dutchFriends = prev.friends.filter(v => v.settlementType === '더치페이')
+//       const dutchFriends = prev.friends.filter(v => v.settlementType === 'DUTCH_PAY')
 
 //       return {
 //         ...prev,

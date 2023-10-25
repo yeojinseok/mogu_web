@@ -120,7 +120,14 @@ export default function SettlementInfoSection() {
           onClick={() => {
             mutate({
               ...settlementInfo,
-              settlementStage: [...stageList],
+              settlementStage: stageList.map(v => {
+                const { id, ...data } = v
+                const data2 = v.participants.map(v => {
+                  const { id, ...value } = v
+                  return value
+                })
+                return { ...v, participants: data2 }
+              }),
               userId: session.data?.userId ?? 0,
               // totalPrice: 0,
               // userId: 0,
