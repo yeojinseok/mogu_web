@@ -18,7 +18,7 @@ export default function SettlementListComponent() {
   const request: SettlementListRequestType = {
     endDate: filterValue.endDate.format('YYYY-MM-DDTHH:mm:ssZ'),
     startDate: filterValue.startDate.format('YYYY-MM-DDTHH:mm:ssZ'),
-    page: 0,
+    page: 1,
     limit: 10,
   }
   const { data } = useSuspenseGetSettlementList(request)

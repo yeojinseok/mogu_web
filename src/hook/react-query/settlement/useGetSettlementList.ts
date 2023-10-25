@@ -49,10 +49,7 @@ const queryFn: ExtractQueryFunction<QueryOptions> = async ({ queryKey }) => {
       params: request,
     })
     .then(v => v.data)
-
-  // return mockData
 }
-
 /**
  * 정산 리스트를 조회하는 API
  * @see http://158.180.90.28:8080/swagger-ui/index.html#/settlement-controller/findSettlements
@@ -87,62 +84,4 @@ export function useSuspenseGetSettlementList(
       ...option,
     }
   )
-}
-//settlement에 식별값이 없네
-const mockData: SettlementListResponseType = {
-  code: 0,
-  status: '100 CONTINUE',
-  message: 'string',
-  data: {
-    settlements: [
-      {
-        totalPrice: 10000,
-        status: 'WAITING',
-        date: '2021-08-01T00:00:00Z',
-      },
-      {
-        totalPrice: 10000,
-        status: 'WAITING',
-        date: '2021-08-01T00:00:00Z',
-      },
-      {
-        totalPrice: 10000,
-        status: 'WAITING',
-        date: '2021-08-01T00:00:00Z',
-      },
-      {
-        totalPrice: 10000,
-        status: 'WAITING',
-        date: '2021-08-01T00:00:00Z',
-      },
-      {
-        totalPrice: 10000,
-        status: 'WAITING',
-        date: '2021-08-01T00:00:00Z',
-      },
-      {
-        totalPrice: 10000,
-        status: 'WAITING',
-        date: '2021-08-01T00:00:00Z',
-      },
-      {
-        totalPrice: 10000,
-        status: 'WAITING',
-        date: '2021-08-01T00:00:00Z',
-      },
-      {
-        totalPrice: 10000,
-        status: 'WAITING',
-        date: '2021-08-01T00:00:00Z',
-      },
-      {
-        totalPrice: 10000,
-        status: 'WAITING',
-        date: '2021-08-01T00:00:00Z',
-      },
-    ],
-    totalDataCount: 10,
-    maxPage: 2,
-    hasNext: true,
-  },
 }
