@@ -6,6 +6,8 @@ import StageSettingSection from '@/components/home/settlement/StageSettingSectio
 import SettlementInfoSection from '@/components/home/settlement/settlementInfoSection'
 import { homeRoute } from '@/router/home'
 import Link from 'next/link'
+import Initializer from './_components/Initializer'
+import NextButton from './_components/NextButton'
 
 export default function SettlementPage(props: {
   searchParams: { [key: string]: string | string[] | undefined }
@@ -16,18 +18,15 @@ export default function SettlementPage(props: {
     <div className="">
       {step === '1' ? (
         <>
+          <Initializer />
           <Header title="정산하기" />
           <IntermediateCheck />
           <div className="h-full px-16 v-stack">
             <StageListSection />
             <StageSettingSection />
           </div>
-          <div className="p-16 footer">
-            {/* FIXME: nextjs setSearchParams 어떻게 다루는지 찾아보고 수정 */}
-            <Link href={homeRoute.settlement('2')}>
-              <Button>다음</Button>
-            </Link>
-          </div>
+
+          <NextButton />
         </>
       ) : (
         <>

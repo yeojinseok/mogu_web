@@ -19,6 +19,7 @@ import { axiosInstance } from '@/axios/axiosInstance'
 import { useSession } from 'next-auth/react'
 import { settlementStageListState } from '@/recoil/settlementStage'
 import { SettlementFriendsType } from '../../../../types/settlementType'
+import { useRouter } from 'next/navigation'
 
 type CreateSettlementType = {
   bankCode: string
@@ -35,11 +36,20 @@ type CreateSettlementType = {
 }
 
 export default function SettlementInfoSection() {
+  const route = useRouter()
+
   const session = useSession()
 
   const { mutate } = useMutation((data: CreateSettlementType) =>
     axiosInstance
-      .post(`/settlements/users/${session.data?.userId}`, data)
+      .post<{
+        code: number
+        status: string
+        message: string
+        data: {
+          settlementId: number
+        }
+      }>(`/settlements/users/${session.data?.userId}`, data)
       .then(v => v.data)
   )
 
@@ -118,21 +128,18 @@ export default function SettlementInfoSection() {
       <div className="p-16 footer">
         <Button
           onClick={() => {
-            mutate({
-              ...settlementInfo,
-              settlementStage: stageList.map(v => {
-                const { id, ...data } = v
-                const data2 = v.participants.map(v => {
-                  const { id, ...value } = v
-                  return value
-                })
-                return { ...v, participants: data2 }
-              }),
-              userId: session.data?.userId ?? 0,
-              // totalPrice: 0,
-              // userId: 0,
-              // settlementStage: [],
-            })
+            mutate(
+              {
+                ...settlementInfo,
+                settlementStage: stageList,
+                userId: session.data?.userId ?? 0,
+              },
+              {
+                onSuccess: res => {
+                  route.replace(`/settlement/${res.data.settlementId}`)
+                },
+              }
+            )
           }}
         >
           정산
