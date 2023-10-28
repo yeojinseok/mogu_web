@@ -168,6 +168,7 @@ function SettlementContent() {
         <div className="gap-12 v-stack">
           {friendNameList.map(friendName => (
             <Collapsible
+              key={friendName}
               titleComponent={
                 <div className="justify-between h-stack body_large_bold">
                   <div>{friendName}</div>
@@ -190,7 +191,10 @@ function SettlementContent() {
               <div className="gap-8 px-16 py-12 rounded-8 v-stack bg-grey-50">
                 {getFriendInfoFromName(friendName).map(friend => {
                   return (
-                    <div className="justify-between h-stack body_default_bold">
+                    <div
+                      key={friend.level}
+                      className="justify-between h-stack body_default_bold"
+                    >
                       <div className="gap-20 h-stack">
                         <div>{friend.level}차</div>
                         <div>{friend.settlementType}</div>

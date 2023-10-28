@@ -24,8 +24,8 @@ export default function SettlementListComponent() {
   const { data } = useSuspenseGetSettlementList(request)
   return (
     <VStack className="h-full overflow-y-scroll ">
-      {data.data.settlements.map(settlement => (
-        <ListItem settlement={settlement} />
+      {data.data.settlements.map((settlement, index) => (
+        <ListItem key={index} settlement={settlement} />
       ))}
     </VStack>
   )

@@ -188,6 +188,7 @@ function BankCodeBottomSheet({
                   hangulIncludes(bank.title, searchKeyword)
                 ).map(v => (
                   <div
+                    key={v.code}
                     onClick={() => {
                       setSettlementInfo(prev => ({ ...prev, bankCode: v.code }))
                       closeSheet()

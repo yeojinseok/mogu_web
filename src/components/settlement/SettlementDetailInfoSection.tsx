@@ -217,6 +217,7 @@ function FriendsList() {
       <VStack className="gap-12">
         {friendNameList.map(friendName => (
           <Collapsible
+            key={friendName}
             titleComponent={
               <div className="justify-between h-stack body_large_bold">
                 <div>{friendName}</div>
@@ -239,7 +240,10 @@ function FriendsList() {
             <div className="gap-8 px-16 py-12 mt-8 rounded-8 v-stack bg-grey-50">
               {getFriendInfoFromName(friendName).map(friend => {
                 return (
-                  <div className="justify-between h-stack body_default_bold">
+                  <div
+                    key={friend.level}
+                    className="justify-between h-stack body_default_bold"
+                  >
                     <div className="gap-20 h-stack">
                       <div className=" min-w-30">{friend.level}차</div>
                       <div>{friend.settlementType}</div>
@@ -360,6 +364,7 @@ function BankCodeBottomSheet({
                   hangulIncludes(bank.title, searchKeyword)
                 ).map(v => (
                   <div
+                    key={v.code}
                     onClick={() => {
                       // setSettlementInfo(prev => ({ ...prev, bankCode: v.code }))
                       closeSheet()
