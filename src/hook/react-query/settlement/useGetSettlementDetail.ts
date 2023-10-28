@@ -32,11 +32,11 @@ type QueryOptions = UseAxiosQueryOptions<
 
 const queryFn: ExtractQueryFunction<QueryOptions> = async ({ queryKey }) => {
   const [key, { settlementID }] = queryKey
-  // return axiosInstance
-  //   .get<SettlementDetailResponseType>(`/settlements/${settlementID}`)
-  //   .then(v => v.data)
+  return axiosInstance
+    .get<SettlementDetailResponseType>(`/settlements/${settlementID}`)
+    .then(v => v.data)
 
-  return mockData
+  // return mockData
 }
 
 /**

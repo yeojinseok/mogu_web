@@ -5,7 +5,13 @@ import backIcon from '../../../public/backIcon.svg'
 import { useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 
-export default function Header({ title }: { title?: string }) {
+export default function Header({
+  title,
+  onClickBackButton,
+}: {
+  title?: string
+  onClickBackButton?: () => void
+}) {
   const router = useRouter()
 
   return (
@@ -13,6 +19,10 @@ export default function Header({ title }: { title?: string }) {
       <Image
         className=" hover:cursor-pointer"
         onClick={() => {
+          if (onClickBackButton) {
+            onClickBackButton()
+            return
+          }
           router.back()
         }}
         src={backIcon}

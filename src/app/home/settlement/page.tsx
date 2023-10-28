@@ -8,6 +8,8 @@ import { homeRoute } from '@/router/home'
 import Link from 'next/link'
 import Initializer from './_components/Initializer'
 import NextButton from './_components/NextButton'
+import useQueryParams from '@/hook/useQueryParams'
+import StepTwo from './_components/StepTwo'
 
 export default function SettlementPage(props: {
   searchParams: { [key: string]: string | string[] | undefined }
@@ -29,10 +31,7 @@ export default function SettlementPage(props: {
           <NextButton />
         </>
       ) : (
-        <>
-          <Header />
-          <SettlementInfoSection />
-        </>
+        <StepTwo />
       )}
     </div>
   )

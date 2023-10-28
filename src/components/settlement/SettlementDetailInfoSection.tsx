@@ -149,9 +149,11 @@ function PriceSection() {
     useRecoilState(currentSelectedStageLevelStage)
 
   const isSelectedAll = currentSelectedStageLevel === 0
-
   const totalPrice = isSelectedAll
-    ? settlement.data.totalPrice
+    ? settlement.data.settlementStages.reduce(
+        (acc, curr) => curr.totalPrice + acc,
+        0
+      )
     : settlement.data.settlementStages.find(
         v => v.level === currentSelectedStageLevel
       )?.totalPrice ?? 0

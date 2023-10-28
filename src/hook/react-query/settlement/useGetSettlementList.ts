@@ -12,6 +12,7 @@ import useUser from '@/hook/useUser'
 import { SettlementStatusCodeType } from '@/consts/metadata'
 
 export type SettlementResponseType = {
+  id: number
   totalPrice: number
   status: SettlementStatusCodeType
   date: string

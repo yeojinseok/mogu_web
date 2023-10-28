@@ -10,6 +10,8 @@ import {
 import { settlementFilterValue } from '@/recoil/settlementFilterValue'
 import { Date } from '@/utils/date'
 import { addComma } from '@/utils/helper'
+import dayjs from 'dayjs'
+import { useRouter } from 'next/navigation'
 import { useRecoilValue } from 'recoil'
 
 export default function SettlementListComponent() {
@@ -22,18 +24,36 @@ export default function SettlementListComponent() {
     limit: 10,
   }
   const { data } = useSuspenseGetSettlementList(request)
+  console.log(data)
   return (
     <VStack className="h-full overflow-y-scroll ">
-      {data.data.settlements.map((settlement, index) => (
-        <ListItem key={index} settlement={settlement} />
+      {data.data.settlements.map(settlement => (
+        <ListItem key={settlement.id} settlement={settlement} />
+      ))}
+      {data.data.settlements.map(settlement => (
+        <ListItem key={settlement.id} settlement={settlement} />
+      ))}
+      {data.data.settlements.map(settlement => (
+        <ListItem key={settlement.id} settlement={settlement} />
+      ))}
+      {data.data.settlements.map(settlement => (
+        <ListItem key={settlement.id} settlement={settlement} />
       ))}
     </VStack>
   )
 }
 
 function ListItem({ settlement }: { settlement: SettlementResponseType }) {
+  const route = useRouter()
+
+  console.log(dayjs(settlement.date).toISOString())
+  console.log(dayjs(settlement.date))
+  console.log(settlement.date)
   return (
-    <VStack className="gap-4 px-16 py-20 border-b-1 border-b-grey-50">
+    <VStack
+      onClick={() => route.push(`/settlement/${settlement.id}`)}
+      className="gap-4 px-16 py-20 border-b-1 border-b-grey-50"
+    >
       <HStack className="justify-between ">
         <div className=" title_subsection">title</div>
         <div className=" title_subsection">
@@ -42,7 +62,7 @@ function ListItem({ settlement }: { settlement: SettlementResponseType }) {
       </HStack>
       <HStack className="gap-11">
         <div className=" body_default text-grey-500">
-          {Date.format(settlement.date)}
+          {Date.format(dayjs(settlement.date).toISOString())}
         </div>
         <div className=" body_default text-grey-500">
           {SETTLEMENT_STATUS_MAP[settlement.status]}
