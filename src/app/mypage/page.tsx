@@ -9,6 +9,7 @@ export default function Page() {
     <VStack className="w-full h-full">
       <Header />
       <Profile />
+      <div></div>
       <SignOutButton />
     </VStack>
   )
