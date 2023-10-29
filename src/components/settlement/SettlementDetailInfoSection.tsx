@@ -3,7 +3,10 @@ import tw from 'twin.macro'
 import { HStack, VStack } from '../common/Stack'
 import { Typography } from '../common/Typography'
 import { useSuspenseQuery } from '@suspensive/react-query'
-import { useSuspenseGetSettlementDetail } from '@/hook/react-query/settlement/useGetSettlementDetail'
+import {
+  useGetSettlementDetail,
+  useSuspenseGetSettlementDetail,
+} from '@/hook/react-query/settlement/useGetSettlementDetail'
 import { usePathname, useRouter } from 'next/navigation'
 import { addComma, getBackTitleFromCode } from '@/utils/helper'
 import { Collapsible } from '../common/Collapsible'
@@ -23,21 +26,36 @@ import { Input2 } from '../common/Input2'
 import { BANK_CODE_LIST } from '@/consts/bankCodeList'
 import { hangulIncludes } from '@toss/hangul'
 import Image from 'next/image'
+import { Button } from '../common/Button'
+import { useSnackbar } from 'notistack'
+import useUser from '@/hook/useUser'
 
 export default function SettlementDetailInfoSection() {
+  const path = usePathname()
+
+  const { enqueueSnackbar } = useSnackbar()
+
+  const settlementID = Number(path.split('/').slice(-1)[0] ?? '0')
+
+  const user = useUser()
+
   const [isOpenEditSheet, setIsOpenEditSheet] = useState(false)
+
+  const { data: settlement } = useGetSettlementDetail(settlementID)
 
   return (
     <>
-      <VStack className="px-16">
+      <VStack className="h-full px-16">
         <HStack className="items-center justify-between ">
           <Typography twStyle={tw`title_screen`}>정산내역</Typography>
-          <Typography
-            onClick={() => setIsOpenEditSheet(true)}
-            twStyle={tw`underline title_body`}
-          >
-            정산 내역 수정
-          </Typography>
+          {user.userId === settlement?.data.userId && (
+            <Typography
+              onClick={() => setIsOpenEditSheet(true)}
+              twStyle={tw`underline title_body`}
+            >
+              정산 내역 수정
+            </Typography>
+          )}
         </HStack>
         <Suspense fallback={<>loading...</>}>
           <AccountSection />
@@ -46,6 +64,21 @@ export default function SettlementDetailInfoSection() {
           <FriendsList />
         </Suspense>
       </VStack>
+      <div className="p-16 footer">
+        <Button
+          onClick={() => {
+            if (!window.navigator.share) {
+              window.navigator.clipboard
+                .writeText(window.location.href)
+                .then(v =>
+                  enqueueSnackbar('복사 되었습니다.', { variant: 'success' })
+                )
+            }
+          }}
+        >
+          공유
+        </Button>
+      </div>
       <SettlementEditBottomSheet
         isOpen={isOpenEditSheet}
         closeSheet={() => setIsOpenEditSheet(false)}
@@ -56,6 +89,8 @@ export default function SettlementDetailInfoSection() {
 
 function AccountSection() {
   const path = usePathname()
+
+  const user = useUser()
 
   const settlementID = Number(path.split('/').slice(-1)[0] ?? '0')
 
@@ -70,7 +105,9 @@ function AccountSection() {
         onToggle={setOpenToggle}
         titleComponent={
           isOpenToggle ? (
-            <Typography twStyle={tw`underline`}>수정</Typography>
+            user.userId === settlement.data.userId ? (
+              <Typography twStyle={tw`underline`}>수정</Typography>
+            ) : null
           ) : (
             <HStack className="justify-between w-full">
               <Typography twStyle={tw`text-grey-700 body_large_bold`}>
