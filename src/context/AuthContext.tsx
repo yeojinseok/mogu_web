@@ -1,36 +1,38 @@
 'use client'
-import { setAccessToken } from '@/axios/axiosInstance'
-import { Session } from 'next-auth'
-import { SessionProvider, signOut, useSession } from 'next-auth/react'
-import { useEffect } from 'react'
+import { useAuthStore } from '@/feature/auth/authStore'
+import { useRouter } from 'next/router'
+import React from 'react'
 
 export default function AuthContext({
   children,
-  session,
 }: {
   children: React.ReactNode
-  session: Session | null
 }) {
-  return (
-    <SessionProvider session={session}>
-      <TokenConsumer />
-      {children}
-    </SessionProvider>
-  )
-}
+  const router = useRouter()
 
-function TokenConsumer() {
-  const session = useSession()
-  useEffect(() => {
-    if (session.status === 'authenticated') {
-      //@ts-ignore
-      if (session.data?.accessToken != null) {
-        //@ts-ignore
-        setAccessToken(session.data.accessToken)
-        return
+  const path = router.pathname
+
+  const isProtectedPage = path.includes('protected') || path === '/'
+
+  const initialize = useAuthStore(state => state.initialize)
+
+  const [isInitialized, setIsInitialized] = React.useState(false)
+
+  React.useEffect(() => {
+    initialize().then(response => {
+      setIsInitialized(true)
+
+      if (isProtectedPage && !response.isLogin) {
+        router.replace('/auth/sign-in')
       }
-      signOut()
-    }
-  }, [session])
-  return null
+    })
+
+    return () => setIsInitialized(false)
+  }, [])
+
+  if (!isInitialized) {
+    return <div>loading....</div>
+  }
+
+  return <>{children}</>
 }

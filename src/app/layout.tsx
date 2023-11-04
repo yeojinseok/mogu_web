@@ -3,8 +3,6 @@ import GlobalStyles from '@/styles/GlobalStyles'
 import StyledComponentsRegistry from '@/lib/registry'
 
 import '../app/globals.css'
-import { getServerSession } from 'next-auth'
-import { authOptions } from './api/auth/[...nextauth]/route'
 import AuthContext from '@/context/AuthContext'
 import RecoilProvider from '@/context/RecoilProvider'
 import SnackbarProvider from '@/context/SnackbarPrivider'
@@ -20,8 +18,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await getServerSession(authOptions)
-
   return (
     <html lang="en">
       <head>
@@ -34,7 +30,7 @@ export default async function RootLayout({
             <ReactQueryProvider>
               <RecoilProvider>
                 <SnackbarProvider>
-                  <AuthContext session={session}>{children}</AuthContext>
+                  <AuthContext>{children}</AuthContext>
                 </SnackbarProvider>
               </RecoilProvider>
             </ReactQueryProvider>
