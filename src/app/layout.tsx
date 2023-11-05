@@ -31,9 +31,7 @@ export default async function RootLayout({
             <ReactQueryProvider>
               <RecoilProvider>
                 <SnackbarProvider>
-                  <AuthContext>
-                    <AuthGuard>{children}</AuthGuard>
-                  </AuthContext>
+                  <AuthContext>{children}</AuthContext>
                 </SnackbarProvider>
               </RecoilProvider>
             </ReactQueryProvider>
