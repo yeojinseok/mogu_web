@@ -51,11 +51,7 @@ export const useAuthStore = create(
           userId: null,
         })
 
-        if (!window) {
-          redirect('/auth/sign-in')
-        }
-
-        window.location.href = '/auth/sign-in'
+        axios.post('/api/auth/sign-out')
         return
       },
       signIn: async (body: { email: string; password: string }) => {

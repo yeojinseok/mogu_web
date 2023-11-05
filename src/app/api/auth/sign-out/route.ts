@@ -5,5 +5,5 @@ import { redirect } from 'next/navigation'
 export async function POST() {
   // cookies().delete("name");
 
-  redirect('/')
+  redirect('/auth/sign-in')
 }
