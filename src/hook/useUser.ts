@@ -1,21 +1,18 @@
-import { signOut, useSession } from 'next-auth/react'
-import React from 'react'
+import { useAuthStore } from '@/feature/auth/store/authStore'
+import { useShallow } from 'zustand/react/shallow'
 
 /**
- * useSession에서 user data를 return 합니다.
- * @returns user
+ * @returns userId null을 제거한 타입으로 Return
  */
-export default function useUser() {
-  const session = useSession()
+export default function useUserID() {
+  const { userId, signOut } = useAuthStore(
+    useShallow(state => ({ userId: state.userId, signOut: state.signOut }))
+  )
 
-  const user = React.useMemo(() => {
-    return session.data
-  }, [session.data])
-
-  if (!user) {
+  if (!userId) {
     signOut()
-    throw new Error('non user')
+    return -1
   }
 
-  return user
+  return userId
 }

@@ -3,7 +3,6 @@ import React from 'react'
 import svg from '../../../../../public/mogu.svg'
 import Header from '@/components/common/Header'
 
-import { signIn } from 'next-auth/react'
 import { Input } from '@/components/common/Input'
 import { Button, ButtonStyled } from '@/components/common/Button'
 

@@ -1,51 +1,50 @@
 'use client'
-import Image from 'next/image'
 import React from 'react'
-import svg from '@public/mogu.svg'
-import Header from '@/components/common/Header'
 
-import { signIn } from 'next-auth/react'
 import { Input } from '@/components/common/Input'
-import { Button, ButtonStyled } from '@/components/common/Button'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { Button } from '@/components/common/Button'
+import { useRouter } from 'next/navigation'
 import { VStack } from '@/components/common/Stack'
 import { useSnackbar } from 'notistack'
+import { useForm } from 'react-hook-form'
+import { useAuthStore } from '@/feature/auth/store/authStore'
 
 export default function SignUpInputSection() {
   const router = useRouter()
   const { enqueueSnackbar } = useSnackbar()
 
-  const searchParams = useSearchParams()
-  const callbackUrl = searchParams.get('callbackUrl')
+  const signUp = useAuthStore(state => state.signUp)
+
+  const { handleSubmit, register } = useForm<{
+    email: string
+    password: string
+    nickname: string
+  }>()
 
   return (
     <VStack className="justify-between h-full pt-20 pb-84">
       <form
         method="post"
-        onSubmit={async event => {
-          const data = new FormData(event.currentTarget)
+        onSubmit={handleSubmit(async value => {
+          const response = await signUp(value)
 
-          await signIn('credentials', {
-            nickname: data.get('nickname') as string,
-            isSignUp: true,
-            redirect: false,
-            email: data.get('email') as string,
-            password: data.get('password') as string,
-            callbackUrl: callbackUrl as string,
-          }).then(res => {
-            if (!res?.error) {
-              router.push(callbackUrl ?? '/')
-            } else {
-              enqueueSnackbar(res.error)
-            }
-          })
-        }}
+          if (!response.isSuccess) {
+            enqueueSnackbar(response.err?.message)
+            return
+          }
+
+          router.replace('/')
+        })}
       >
         <div className="p-16 pt-24 gap-36 v-stack">
-          <Input name="email" placeholder="이메일" />
+          <Input {...register('email')} placeholder="이메일" />
           <VStack className="gap-8">
             <div className=" v-stack">
-              <Input name="password" placeholder="비밀번호" type="password" />
+              <Input
+                placeholder="비밀번호"
+                type="password"
+                {...register('password')}
+              />
               <Input name="password" placeholder="비밀번호" type="password" />
             </div>
             <div className=" body_default text-grey-900">
@@ -53,7 +52,7 @@ export default function SignUpInputSection() {
             </div>
           </VStack>
           <VStack className="gap-8">
-            <Input name="nickname" placeholder="닉네임" />
+            <Input {...register('nickname')} placeholder="닉네임" />
             <div className=" body_default text-grey-900">
               영어,숫자,한글(2~16자)
             </div>

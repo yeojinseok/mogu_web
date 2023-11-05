@@ -2,43 +2,38 @@
 import Image from 'next/image'
 import React from 'react'
 import svg from '@public/mogu.svg'
-import Header from '@/components/common/Header'
-
-import { signIn } from 'next-auth/react'
+import { useForm } from 'react-hook-form'
 import { Input } from '@/components/common/Input'
-import { Button, ButtonStyled } from '@/components/common/Button'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { VStack } from '@/components/common/Stack'
+import { Button } from '@/components/common/Button'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useSnackbar } from 'notistack'
-import axios from 'axios'
+import { useAuthStore } from '@/feature/auth/store/authStore'
 
 export default function SignInInputSection() {
   const router = useRouter()
   const { enqueueSnackbar } = useSnackbar()
 
-  const searchParams = useSearchParams()
-  const callbackUrl = searchParams.get('callbackUrl')
+  const signIn = useAuthStore().signIn
+
+  const { handleSubmit, register } = useForm<{
+    email: string
+    password: string
+  }>()
 
   return (
     <div className="pt-20">
       <form
         method="post"
-        onSubmit={async event => {
-          const data = new FormData(event.currentTarget)
+        onSubmit={handleSubmit(async data => {
+          const response = await signIn(data)
+          if (!response.isSuccess) {
+            enqueueSnackbar(response.err?.message)
+            return
+          }
 
-          signIn('credentials', {
-            email: data.get('email') as string,
-            password: data.get('password') as string,
-            redirect: false,
-          }).then(res => {
-            if (!res?.error) {
-              router.push(callbackUrl ?? '/')
-            } else {
-              enqueueSnackbar(res.error)
-            }
-          })
-        }}
+          router.replace('/')
+        })}
       >
         <div className="gap-24 p-16 pt-24 v-stack">
           <div className="relative items-center gap-8 v-stack">
@@ -47,13 +42,16 @@ export default function SignInInputSection() {
           </div>
 
           <div className="gap-8 v-stack">
-            <Input name="email" placeholder="이메일" />
-            <Input name="password" placeholder="비밀번호" type="password" />
+            <Input placeholder="이메일" {...register('email')} />
+            <Input
+              placeholder="비밀번호"
+              type="password"
+              {...register('password')}
+            />
           </div>
           <Link
             href={{
               pathname: '/auth/sign-up/email',
-              query: `${searchParams}`,
             }}
           >
             <div className="justify-center underline text-grey-700 h-stack">

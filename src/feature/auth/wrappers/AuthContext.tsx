@@ -1,6 +1,6 @@
 'use client'
-import { useAuthStore } from '@/feature/auth/authStore'
-import { useRouter } from 'next/router'
+import { useAuthStore } from '@/feature/auth/store/authStore'
+import { usePathname, useRouter } from 'next/navigation'
 import React from 'react'
 
 export default function AuthContext({
@@ -8,9 +8,8 @@ export default function AuthContext({
 }: {
   children: React.ReactNode
 }) {
-  const router = useRouter()
-
-  const path = router.pathname
+  const path = usePathname()
+  const navigate = useRouter()
 
   const isProtectedPage = path.includes('protected') || path === '/'
 
@@ -23,7 +22,7 @@ export default function AuthContext({
       setIsInitialized(true)
 
       if (isProtectedPage && (!response.accessToken || !response.userId)) {
-        router.replace('/auth/sign-in')
+        navigate.replace('/auth/sign-in')
       }
     })
 

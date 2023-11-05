@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/feature/auth/authStore'
+import { useAuthStore } from '@/feature/auth/store/authStore'
 import axios, { AxiosError } from 'axios'
 
 import qs from 'qs'
@@ -20,7 +20,7 @@ export const axiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.request.use(async request => {
-  const accessToken = useAuthStore().accessToken
+  const accessToken = useAuthStore.getState().accessToken
 
   if (accessToken) {
     request.headers.Authorization = `Bearer ${accessToken}`

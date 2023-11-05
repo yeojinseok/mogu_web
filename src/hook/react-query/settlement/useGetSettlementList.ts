@@ -8,7 +8,7 @@ import {
 } from '@/utils/reactQueryTypeHelper'
 import { settlementQueryKey } from '@/consts/reactQueryKeys'
 
-import useUser from '@/hook/useUser'
+import useUserID from '@/hook/useUser'
 import { SettlementStatusCodeType } from '@/consts/metadata'
 
 export type SettlementResponseType = {
@@ -59,9 +59,9 @@ export function useGetSettlementList(
   request: SettlementListRequestType,
   option?: QueryOptions
 ) {
-  const user = useUser()
+  const userId = useUserID()
   return useQuery(
-    [settlementQueryKey, { userID: user.userId, ...request }],
+    [settlementQueryKey, { userID: userId, ...request }],
     queryFn,
     {
       ...option,
@@ -77,9 +77,9 @@ export function useSuspenseGetSettlementList(
   request: SettlementListRequestType,
   option?: QueryOptions
 ) {
-  const user = useUser()
+  const userId = useUserID()
   return useSuspenseQuery(
-    [settlementQueryKey, { userID: user.userId, ...request }],
+    [settlementQueryKey, { userID: userId, ...request }],
     queryFn,
     {
       ...option,

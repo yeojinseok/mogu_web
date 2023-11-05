@@ -6,7 +6,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 type AuthStateType = {
-  isLogin: boolean
+  getIsLogin: () => boolean
   accessToken: string | null
   userId: number | null
 
@@ -43,7 +43,9 @@ export const useAuthStore = create(
       accessToken: null,
       userId: null,
 
-      isLogin: !!get().userId && !!get().accessToken,
+      getIsLogin: () => {
+        return !!get().userId && !!get().accessToken
+      },
 
       signOut: () => {
         set({
@@ -56,17 +58,16 @@ export const useAuthStore = create(
       },
       signIn: async (body: { email: string; password: string }) => {
         try {
-          const accessToken = await signIn(body)
-
-          const decoded = jwtDecode<{ userId: number }>(accessToken)
+          const signInResponse = await signIn(body)
 
           const response = {
             isSuccess: true,
             data: {
-              accessToken: accessToken,
-              userId: decoded.userId,
+              accessToken: signInResponse.accessToken,
+              userId: signInResponse.userId,
             },
           }
+
           set(response.data)
           return response
         } catch (err) {
@@ -74,7 +75,7 @@ export const useAuthStore = create(
             const response = {
               isSuccess: false,
               data: null,
-              err: err,
+              err: err.response?.data,
             }
             return response
           }
@@ -110,7 +111,7 @@ export const useAuthStore = create(
             const response = {
               isSuccess: false,
               data: null,
-              err: err,
+              err: err.response?.data,
             }
             return response
           }
@@ -160,8 +161,11 @@ export const useAuthStore = create(
 
 async function signIn(body: { email: string; password: string }) {
   return axiosInstance
-    .post<{ data: { accessToken: string } }>('/authentication/login', body)
-    .then(v => v.data.data.accessToken)
+    .post<{ data: { accessToken: string; userId: number } }>(
+      '/authentication/login',
+      body
+    )
+    .then(v => v.data.data)
 }
 
 async function getAccessToken() {
