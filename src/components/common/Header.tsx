@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import backIcon from '../../../public/backIcon.svg'
 import { useRouter } from 'next/navigation'
-import { signOut } from 'next-auth/react'
+import { useAuthStore } from '@/feature/auth/store/authStore'
 
 export default function Header({
   title,

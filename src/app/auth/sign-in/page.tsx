@@ -2,7 +2,6 @@ import Image from 'next/image'
 import React from 'react'
 import svg from '../../../../public/mogu.svg'
 import Link from 'next/link'
-import { getProviders } from 'next-auth/react'
 
 export default async function SignIn(props: {
   searchParams: { [key: string]: string | string[] | undefined }

@@ -33,12 +33,11 @@
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.3",
     "framer-motion": "^10.16.4",
-    "jwt-decode": "^3.1.2",
+    "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",
     "mime-types": "^2.1.35",
     "nanoid": "^4.0.2",
     "next": "13.4.3",
-    "next-auth": "^4.23.1",
     "next-remove-imports": "^1.0.11",
     "next-sanity": "^5.0.2",
     "notistack": "^3.0.1",
@@ -46,6 +45,7 @@
     "qs": "^6.11.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.48.2",
     "react-icons": "^4.11.0",
     "react-markdown": "^8.0.7",
     "react-modal-sheet": "^2.0.0",
@@ -55,7 +55,7 @@
     "tailwindcss": "^3.3.3",
     "typescript": "5.0.4",
     "uuid": "^9.0.1",
-    "zustand": "^4.3.8"
+    "zustand": "^4.4.5"
   },
   "resolutions": {
     "@types/react": "^17.0.38"

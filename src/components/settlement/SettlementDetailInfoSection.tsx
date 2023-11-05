@@ -28,7 +28,7 @@ import { hangulIncludes } from '@toss/hangul'
 import Image from 'next/image'
 import { Button } from '../common/Button'
 import { useSnackbar } from 'notistack'
-import useUser from '@/hook/useUser'
+import useUserID from '@/hook/useUser'
 
 export default function SettlementDetailInfoSection() {
   const path = usePathname()
@@ -37,7 +37,7 @@ export default function SettlementDetailInfoSection() {
 
   const settlementID = Number(path.split('/').slice(-1)[0] ?? '0')
 
-  const user = useUser()
+  const userId = useUserID()
 
   const [isOpenEditSheet, setIsOpenEditSheet] = useState(false)
 
@@ -48,7 +48,7 @@ export default function SettlementDetailInfoSection() {
       <VStack className="h-full px-16">
         <HStack className="items-center justify-between ">
           <Typography twStyle={tw`title_screen`}>정산내역</Typography>
-          {user.userId === settlement?.data.userId && (
+          {userId === settlement?.data.userId && (
             <Typography
               onClick={() => setIsOpenEditSheet(true)}
               twStyle={tw`underline title_body`}
@@ -90,7 +90,7 @@ export default function SettlementDetailInfoSection() {
 function AccountSection() {
   const path = usePathname()
 
-  const user = useUser()
+  const userId = useUserID()
 
   const settlementID = Number(path.split('/').slice(-1)[0] ?? '0')
 
@@ -105,7 +105,7 @@ function AccountSection() {
         onToggle={setOpenToggle}
         titleComponent={
           isOpenToggle ? (
-            user.userId === settlement.data.userId ? (
+            userId === settlement.data.userId ? (
               <Typography twStyle={tw`underline`}>수정</Typography>
             ) : null
           ) : (

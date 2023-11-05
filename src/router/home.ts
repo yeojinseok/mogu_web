@@ -1,5 +1,5 @@
 export const homeRoute = {
   index: '/home',
-  home: (id: string) => `/home/${id}`,
+  home: (id: number) => `/home/${id}`,
   settlement: (step: string) => `/home/settlement?step=${step}`,
 }
