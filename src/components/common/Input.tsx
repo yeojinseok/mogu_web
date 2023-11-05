@@ -24,7 +24,6 @@ export const Input = React.forwardRef<
   return (
     <div className="relative ">
       <InputStyled
-        style={{}}
         value={value}
         ref={ref}
         {...props}
