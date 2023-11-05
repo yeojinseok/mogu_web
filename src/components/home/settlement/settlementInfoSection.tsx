@@ -16,10 +16,11 @@ import { Button } from '@/components/common/Button'
 import { homeRoute } from '@/router/home'
 import { useMutation } from '@tanstack/react-query'
 import { axiosInstance } from '@/axios/axiosInstance'
-import { useSession } from 'next-auth/react'
+
 import { settlementStageListState } from '@/recoil/settlementStage'
 import { SettlementFriendsType } from '../../../../types/settlementType'
 import { useRouter } from 'next/navigation'
+import useUserID from '@/hook/useUser'
 
 type CreateSettlementType = {
   bankCode: string
@@ -38,7 +39,7 @@ type CreateSettlementType = {
 export default function SettlementInfoSection() {
   const route = useRouter()
 
-  const session = useSession()
+  const userId = useUserID()
 
   const { mutate } = useMutation((data: CreateSettlementType) =>
     axiosInstance
@@ -49,7 +50,7 @@ export default function SettlementInfoSection() {
         data: {
           settlementId: number
         }
-      }>(`/settlements/users/${session.data?.userId}`, data)
+      }>(`/settlements/users/${userId}`, data)
       .then(v => v.data)
   )
 
@@ -132,7 +133,7 @@ export default function SettlementInfoSection() {
               {
                 ...settlementInfo,
                 settlementStage: stageList,
-                userId: session.data?.userId ?? 0,
+                userId: userId,
               },
               {
                 onSuccess: res => {
