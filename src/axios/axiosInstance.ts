@@ -1,7 +1,6 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { useAuthStore } from '@/feature/auth/authStore'
 import axios, { AxiosError } from 'axios'
-import { getServerSession } from 'next-auth'
-import { getSession, signOut } from 'next-auth/react'
+
 import qs from 'qs'
 
 export const axiosInstance = axios.create({
@@ -21,6 +20,12 @@ export const axiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.request.use(async request => {
+  const accessToken = useAuthStore().accessToken
+
+  if (accessToken) {
+    request.headers.Authorization = `Bearer ${accessToken}`
+  }
+
   return request
 })
 
@@ -31,27 +36,18 @@ axiosInstance.interceptors.response.use(
   async (error: AxiosError) => {
     const originalRequest = error.config
     if (error.response?.status === 401) {
-      const token =
-        (await getSession()) || (await getServerSession(authOptions))
-      //@ts-ignore
-      const accessToken = token?.accessToken as string
-      if (!accessToken) {
-        signOut({
-          redirect: true,
-          callbackUrl: '/',
-        })
+      const { refreshAccessToken, signOut } = useAuthStore()
+      const accessToken = await refreshAccessToken()
+      if (!accessToken.accessToken) {
+        signOut()
       }
-      setAccessToken(accessToken)
+
       if (originalRequest != null) {
         originalRequest.headers.Authorization = `Bearer ${accessToken}`
+        return axiosInstance(originalRequest)
       }
     }
 
     return Promise.reject(error)
   }
 )
-export const setAccessToken = (accessToken: string) => {
-  axiosInstance.defaults.headers.common[
-    'Authorization'
-  ] = `Bearer ${accessToken}`
-}
