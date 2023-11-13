@@ -5,5 +5,7 @@ import { redirect } from 'next/navigation'
 export async function POST() {
   // cookies().delete("name");
 
-  redirect('/auth/sign-in')
+  const data = cookies().getAll()
+
+  redirect('/home')
 }
