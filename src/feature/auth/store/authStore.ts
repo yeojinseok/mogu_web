@@ -48,10 +48,10 @@ export const useAuthStore = create(
       },
 
       signOut: () => {
-        set({
-          accessToken: null,
-          userId: null,
-        })
+        // set({
+        //   accessToken: null,
+        //   userId: null,
+        // })
 
         axios.post('/api/auth/sign-out')
         return
@@ -125,8 +125,9 @@ export const useAuthStore = create(
 
       refreshAccessToken: async () => {
         try {
-          const accessToken = await getAccessToken()
-          if (!!accessToken) {
+          const res = await getAccessToken()
+          console.log(res, ';!?!!?')
+          if (!!res.accessToken) {
             const response = {
               accessToken: null,
               userId: null,
@@ -134,12 +135,9 @@ export const useAuthStore = create(
             set(response)
             return response
           }
-
-          const decoded = jwtDecode<{ userId: number }>(accessToken)
-
           const response = {
-            accessToken: accessToken,
-            userId: decoded.userId,
+            accessToken: res.accessToken,
+            userId: res.userId,
           }
           set(response)
           return response
@@ -163,15 +161,22 @@ async function signIn(body: { email: string; password: string }) {
   return axiosInstance
     .post<{ data: { accessToken: string; userId: number } }>(
       '/authentication/login',
-      body
+      body,
+      {
+        withCredentials: true,
+      }
     )
     .then(v => v.data.data)
 }
 
 async function getAccessToken() {
   return axiosInstance
-    .put<{ data: { accessToken: string } }>('/authentication/refresh')
-    .then(v => v.data.data.accessToken)
+    .put<{ data: { accessToken: string; userId: number } }>(
+      '/authentication/refresh'
+    )
+    .then(v => {
+      return v.data.data
+    })
 }
 
 async function signUp(body: {
