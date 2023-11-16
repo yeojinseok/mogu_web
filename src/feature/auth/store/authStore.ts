@@ -93,15 +93,13 @@ export const useAuthStore = create(
         nickname: string
       }) => {
         try {
-          const accessToken = await signUp(body)
-
-          const decoded = jwtDecode<{ userId: number }>(accessToken)
+          const res = await signUp(body)
 
           const response = {
             isSuccess: true,
             data: {
-              accessToken: accessToken,
-              userId: decoded.userId,
+              accessToken: res.accessToken,
+              userId: res.userId,
             },
           }
           set(response.data)
@@ -126,8 +124,8 @@ export const useAuthStore = create(
       refreshAccessToken: async () => {
         try {
           const res = await getAccessToken()
-          console.log(res, ';!?!!?')
-          if (!!res.accessToken) {
+
+          if (!res.accessToken) {
             const response = {
               accessToken: null,
               userId: null,
@@ -158,9 +156,9 @@ export const useAuthStore = create(
 )
 
 async function signIn(body: { email: string; password: string }) {
-  return axiosInstance
+  return axios
     .post<{ data: { accessToken: string; userId: number } }>(
-      '/authentication/login',
+      '/api/auth/sign-in',
       body,
       {
         withCredentials: true,
@@ -170,9 +168,13 @@ async function signIn(body: { email: string; password: string }) {
 }
 
 async function getAccessToken() {
-  return axiosInstance
+  return axios
     .put<{ data: { accessToken: string; userId: number } }>(
-      '/authentication/refresh'
+      '/api/auth/refresh-token',
+      {},
+      {
+        withCredentials: true,
+      }
     )
     .then(v => {
       return v.data.data
@@ -185,6 +187,9 @@ async function signUp(body: {
   nickname: string
 }) {
   return axiosInstance
-    .post<{ data: { accessToken: string } }>('/authentication/register', body)
-    .then(v => v.data.data.accessToken)
+    .post<{ data: { accessToken: string; userId: number } }>(
+      '/authentication/register',
+      body
+    )
+    .then(v => v.data.data)
 }

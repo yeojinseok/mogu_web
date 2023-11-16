@@ -12,6 +12,5 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
     return null
   }
 
-  console.log(userId, accessToken)
   return <>{children}</>
 }

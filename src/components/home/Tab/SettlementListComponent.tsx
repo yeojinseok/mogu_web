@@ -24,7 +24,7 @@ export default function SettlementListComponent() {
     limit: 10,
   }
   const { data } = useSuspenseGetSettlementList(request)
-  console.log(data)
+
   return (
     <VStack className="h-full overflow-y-scroll ">
       {data.data.settlements.map(settlement => (
@@ -46,9 +46,6 @@ export default function SettlementListComponent() {
 function ListItem({ settlement }: { settlement: SettlementResponseType }) {
   const route = useRouter()
 
-  console.log(dayjs(settlement.date).toISOString())
-  console.log(dayjs(settlement.date))
-  console.log(settlement.date)
   return (
     <VStack
       onClick={() => route.push(`/settlement/${settlement.id}`)}
