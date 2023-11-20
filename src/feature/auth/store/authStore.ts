@@ -59,6 +59,7 @@ export const useAuthStore = create(
       signIn: async (body: { email: string; password: string }) => {
         try {
           const signInResponse = await signIn(body)
+          console.log(signInResponse, '??')
 
           const response = {
             isSuccess: true,
@@ -71,7 +72,9 @@ export const useAuthStore = create(
           set(response.data)
           return response
         } catch (err) {
+          console.log(err, '??!?!')
           if (axios.isAxiosError(err)) {
+            console.log(err, '?!?!?!')
             const response = {
               isSuccess: false,
               data: null,
@@ -94,7 +97,7 @@ export const useAuthStore = create(
       }) => {
         try {
           const res = await signUp(body)
-
+          console.log(res)
           const response = {
             isSuccess: true,
             data: {
@@ -159,10 +162,7 @@ async function signIn(body: { email: string; password: string }) {
   return axios
     .post<{ data: { accessToken: string; userId: number } }>(
       '/api/auth/sign-in',
-      body,
-      {
-        withCredentials: true,
-      }
+      body
     )
     .then(v => v.data.data)
 }
@@ -170,11 +170,7 @@ async function signIn(body: { email: string; password: string }) {
 async function getAccessToken() {
   return axios
     .put<{ data: { accessToken: string; userId: number } }>(
-      '/api/auth/refresh-token',
-      {},
-      {
-        withCredentials: true,
-      }
+      '/api/auth/refresh-token'
     )
     .then(v => {
       return v.data.data
@@ -186,9 +182,9 @@ async function signUp(body: {
   password: string
   nickname: string
 }) {
-  return axiosInstance
+  return axios
     .post<{ data: { accessToken: string; userId: number } }>(
-      '/authentication/register',
+      '/api/auth/sign-up',
       body
     )
     .then(v => v.data.data)

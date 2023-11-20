@@ -1,11 +1,10 @@
 import { cookies } from 'next/headers'
 
 import { redirect } from 'next/navigation'
+import { NextRequest } from 'next/server'
 
-export async function POST() {
-  // cookies().delete("name");
+export async function POST(request: NextRequest) {
+  request.cookies.delete('refreshToken')
 
-  const data = cookies().getAll()
-
-  redirect('/home')
+  redirect('/')
 }
