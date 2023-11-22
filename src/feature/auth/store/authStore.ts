@@ -97,7 +97,6 @@ export const useAuthStore = create(
       }) => {
         try {
           const res = await signUp(body)
-          console.log(res)
           const response = {
             isSuccess: true,
             data: {
@@ -127,7 +126,7 @@ export const useAuthStore = create(
       refreshAccessToken: async () => {
         try {
           const res = await getAccessToken()
-
+          console.log(res)
           if (!res.accessToken) {
             const response = {
               accessToken: null,
@@ -162,7 +161,10 @@ async function signIn(body: { email: string; password: string }) {
   return axios
     .post<{ data: { accessToken: string; userId: number } }>(
       '/api/auth/sign-in',
-      body
+      body,
+      {
+        withCredentials: true,
+      }
     )
     .then(v => v.data.data)
 }
@@ -173,6 +175,7 @@ async function getAccessToken() {
       '/api/auth/refresh-token'
     )
     .then(v => {
+      console.log(v.data)
       return v.data.data
     })
 }

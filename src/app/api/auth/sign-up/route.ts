@@ -10,16 +10,15 @@ export async function POST(req: NextRequest) {
         data: { accessToken: string; refreshToken: string; userId: number }
       }>('/authentication/register', data)
       .then(v => v)
-    console.log(res.data.data)
-    req.cookies.set({
+
+    const nextResponse = NextResponse.json(res.data)
+    nextResponse.cookies.set({
       name: 'refreshToken',
       value: res.data.data.refreshToken,
       httpOnly: true,
     })
-
-    return NextResponse.json(res.data)
+    return nextResponse
   } catch (err) {
-    console.log(err, 'Er!!')
     if (!axios.isAxiosError(err)) {
       return NextResponse.json({ message: null }, { status: 500 })
     }

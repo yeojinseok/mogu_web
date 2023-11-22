@@ -14,12 +14,13 @@ export async function POST(req: NextRequest) {
       })
       .then(v => v)
 
-    req.cookies.set({
+    const nextResponse = NextResponse.json(res.data)
+    nextResponse.cookies.set({
       name: 'refreshToken',
       value: res.data.data.refreshToken,
       httpOnly: true,
     })
-    return NextResponse.json(res.data)
+    return nextResponse
   } catch (err) {
     if (!axios.isAxiosError(err)) {
       return NextResponse.json({ message: null }, { status: 500 })
