@@ -11,16 +11,11 @@ interface CustomButtonProps
 
 export const ButtonStyled = styled.button`
   ${tw`flex items-center justify-center w-full bg-lime-500 h-52 title_body rounded-8`}
+  ${props => (props.disabled ? tw`bg-grey-100 text-grey-200` : undefined)}
 `
 
 export const Button = React.forwardRef<HTMLButtonElement, CustomButtonProps>(
   function Button(props, ref) {
-    // const debounceCallback = (
-    //   e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-    // ) => {
-    //   debounce(() => props.onClick?.(e), 100)
-    // }
-
     const handleClick = useCallback(
       debounce((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         props.onClick?.(e)
@@ -29,7 +24,7 @@ export const Button = React.forwardRef<HTMLButtonElement, CustomButtonProps>(
     )
 
     return (
-      <ButtonStyled ref={ref} onClick={handleClick}>
+      <ButtonStyled {...props} ref={ref} onClick={handleClick}>
         {props.children}
       </ButtonStyled>
     )
