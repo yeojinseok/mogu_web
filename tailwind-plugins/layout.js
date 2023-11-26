@@ -17,12 +17,13 @@ const layout = plugin(function ({ addUtilities }) {
       flexDirection: 'row',
     },
     '.footer': {
-      position: 'absolute',
+      position: 'fixed',
       bottom: 0,
 
       width: '100%',
       maxWidth: '768px',
       margin: '0 auto',
+      padding: 16,
     },
   })
 })
