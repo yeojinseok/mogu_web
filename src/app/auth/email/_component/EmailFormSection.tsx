@@ -16,8 +16,6 @@ export default function EmailFormSection() {
     email: string
   }>()
 
-  console.log(!!formState.errors.email, '???')
-
   const { mutate } = useCheckRegister()
 
   return (

@@ -44,12 +44,14 @@ export const StickyButton = React.forwardRef<
   )
 
   return (
-    <div className="h-90">
-      <div className="fixed bottom-0 left-0 flex justify-center w-full p-16">
-        <div className="w-full max-w-screen-tablet">
-          <ButtonStyled {...props} ref={ref} onClick={handleClick}>
-            {props.children}
-          </ButtonStyled>
+    <div>
+      <div className="h-90 ">
+        <div className="fixed bottom-0 left-0 flex justify-center w-full p-16">
+          <div className="w-full max-w-screen-tablet">
+            <ButtonStyled {...props} ref={ref} onClick={handleClick}>
+              {props.children}
+            </ButtonStyled>
+          </div>
         </div>
       </div>
     </div>

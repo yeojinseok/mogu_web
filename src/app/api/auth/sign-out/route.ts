@@ -1,10 +1,10 @@
 import { cookies } from 'next/headers'
 
 import { redirect } from 'next/navigation'
-import { NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
-  request.cookies.delete('refreshToken')
+  cookies().delete('refreshToken')
 
-  redirect('/')
+  redirect('/auth/email')
 }
