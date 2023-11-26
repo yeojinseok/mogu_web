@@ -25,7 +25,7 @@ export default async function RootLayout({
         <link href="/dist/output.css" rel="stylesheet" />
       </head>
       <body className="relative flex items-center justify-center w-full h-full bg-white">
-        <div className="flex-auto w-full h-full overflow-hidden bg-white max-w-screen-tablet">
+        <div className="flex-auto w-full h-full bg-white max-w-screen-tablet">
           <StyledComponentsRegistry>
             <GlobalStyles />
             <ReactQueryProvider>

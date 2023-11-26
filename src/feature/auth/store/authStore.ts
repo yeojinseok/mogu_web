@@ -48,11 +48,6 @@ export const useAuthStore = create(
       },
 
       signOut: () => {
-        // set({
-        //   accessToken: null,
-        //   userId: null,
-        // })
-
         axios.post('/api/auth/sign-out')
         return
       },
