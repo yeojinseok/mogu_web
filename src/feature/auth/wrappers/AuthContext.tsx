@@ -17,7 +17,7 @@ export default function AuthContext({
 
   const [isInitialized, setIsInitialized] = React.useState(false)
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     initialize().then(response => {
       setIsInitialized(true)
 
@@ -29,9 +29,9 @@ export default function AuthContext({
     return () => setIsInitialized(false)
   }, [])
 
-  if (!isInitialized) {
-    return <div>loading....</div>
-  }
+  // if (!isInitialized) {
+  //   return <div>loading....</div>
+  // }
 
   return <>{children}</>
 }

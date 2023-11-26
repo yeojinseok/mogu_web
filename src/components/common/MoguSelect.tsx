@@ -31,10 +31,6 @@ export default function MoguSelect({
     }
   }
 
-  // useEffect(() => {
-  //   addEventListener('mousedown', e => console.log(e.clientX, e.clientY))
-  // }, [])
-
   return (
     <div
       style={

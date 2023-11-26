@@ -15,23 +15,24 @@ export default function Header({
   const router = useRouter()
 
   return (
-    <div className="items-center justify-between h-56 p-16 h-stack title_subsection">
-      <Image
-        className=" hover:cursor-pointer"
-        onClick={() => {
-          if (onClickBackButton) {
-            onClickBackButton()
-            return
-          }
-          router.back()
-        }}
-        src={backIcon}
-        width={24}
-        height={24}
-        alt="backIcon"
-      />
-      <div className="">{title}</div>
-      <div></div>
+    <div className="relative items-center justify-center w-full h-56 p-16 h-stack title_subsection border-b-1 border-b-grey-50">
+      <div className="absolute left-16">
+        <Image
+          className=" hover:cursor-pointer"
+          onClick={() => {
+            if (onClickBackButton) {
+              onClickBackButton()
+              return
+            }
+            router.back()
+          }}
+          src={backIcon}
+          width={24}
+          height={24}
+          alt="backIcon"
+        />
+      </div>
+      <div className=" title_subsection">{title}</div>
     </div>
   )
 }

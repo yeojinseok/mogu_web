@@ -2,16 +2,21 @@
 import React from 'react'
 
 import { Input } from '@/components/common/Input'
-import { Button } from '@/components/common/Button'
+import { Button, StickyButton } from '@/components/common/Button'
 import { useRouter } from 'next/navigation'
 import { VStack } from '@/components/common/Stack'
 import { useSnackbar } from 'notistack'
 import { useForm } from 'react-hook-form'
 import { useAuthStore } from '@/feature/auth/store/authStore'
+import useQueryParams from '@/hook/useQueryParams'
 
 export default function SignUpInputSection() {
   const router = useRouter()
   const { enqueueSnackbar } = useSnackbar()
+
+  const { queryParams } = useQueryParams()
+
+  const email = queryParams.get('email')
 
   const signUp = useAuthStore(state => state.signUp)
 
@@ -19,25 +24,21 @@ export default function SignUpInputSection() {
     email: string
     password: string
     nickname: string
-  }>()
+  }>({
+    defaultValues: {
+      email: email ?? '',
+    },
+  })
+
+  if (!email) {
+    throw new Error('요청 url이 잘못 되었습니다.')
+  }
 
   return (
-    <VStack className="justify-between h-full pt-20 pb-84">
-      <form
-        method="post"
-        onSubmit={handleSubmit(async value => {
-          const response = await signUp(value)
-
-          if (!response.isSuccess) {
-            enqueueSnackbar(response.err?.message)
-            return
-          }
-
-          router.replace('/')
-        })}
-      >
+    <VStack className="h-full">
+      <VStack className="justify-between h-full pt-20 overflow-scroll pb-84">
         <div className="p-16 pt-24 gap-36 v-stack">
-          <Input {...register('email')} placeholder="이메일" />
+          <Input {...register('email')} placeholder="이메일" disabled />
           <VStack className="gap-8">
             <div className=" v-stack">
               <Input
@@ -58,16 +59,14 @@ export default function SignUpInputSection() {
             </div>
           </VStack>
         </div>
-        <div className="p-16 footer">
-          <Button type="submit">동의하고 계속하기</Button>
+        <div className="px-16 ">
+          원활한 서비스 이용을 위해{' '}
+          <span className="underline ">서비스 이용 약관</span>,{' '}
+          <span className="underline">개인정보수집 및 이용</span>에 동의합니다.
         </div>
-      </form>
+      </VStack>
 
-      <div className="px-16 ">
-        원활한 서비스 이용을 위해{' '}
-        <span className="underline ">서비스 이용 약관</span>,{' '}
-        <span className="underline">개인정보수집 및 이용</span>에 동의합니다.
-      </div>
+      <StickyButton>동의하고 계속하기</StickyButton>
     </VStack>
   )
 }

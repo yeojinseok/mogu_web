@@ -59,7 +59,6 @@ export const useAuthStore = create(
       signIn: async (body: { email: string; password: string }) => {
         try {
           const signInResponse = await signIn(body)
-          console.log(signInResponse, '??')
 
           const response = {
             isSuccess: true,
@@ -72,9 +71,7 @@ export const useAuthStore = create(
           set(response.data)
           return response
         } catch (err) {
-          console.log(err, '??!?!')
           if (axios.isAxiosError(err)) {
-            console.log(err, '?!?!?!')
             const response = {
               isSuccess: false,
               data: null,
@@ -126,7 +123,7 @@ export const useAuthStore = create(
       refreshAccessToken: async () => {
         try {
           const res = await getAccessToken()
-          console.log(res)
+
           if (!res.accessToken) {
             const response = {
               accessToken: null,
@@ -175,7 +172,6 @@ async function getAccessToken() {
       '/api/auth/refresh-token'
     )
     .then(v => {
-      console.log(v.data)
       return v.data.data
     })
 }

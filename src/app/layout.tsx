@@ -24,7 +24,7 @@ export default async function RootLayout({
       <head>
         <link href="/dist/output.css" rel="stylesheet" />
       </head>
-      <body className="flex items-center justify-center h-full bg-grey-900">
+      <body className="relative flex items-center justify-center w-full h-full bg-white">
         <div className="flex-auto w-full h-full overflow-hidden bg-white max-w-screen-tablet">
           <StyledComponentsRegistry>
             <GlobalStyles />
