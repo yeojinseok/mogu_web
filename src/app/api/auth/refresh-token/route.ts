@@ -26,6 +26,7 @@ export async function PUT(req: NextRequest) {
 
     return NextResponse.json(res.data)
   } catch (err) {
+    //@ts-ignore
     cookies().delete('refreshToken')
     redirect('/')
   }
