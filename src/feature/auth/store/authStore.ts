@@ -1,41 +1,41 @@
-import { axiosInstance } from '@/axios/axiosInstance'
-import axios, { AxiosError } from 'axios'
-import { jwtDecode } from 'jwt-decode'
-import { redirect } from 'next/navigation'
-import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { axiosInstance } from "@/axios/axiosInstance";
+import axios, { AxiosError } from "axios";
+import { jwtDecode } from "jwt-decode";
+import { redirect } from "next/navigation";
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 type AuthStateType = {
-  getIsLogin: () => boolean
-  accessToken: string | null
-  userId: number | null
+  getIsLogin: () => boolean;
+  accessToken: string | null;
+  userId: number | null;
 
-  signOut: () => void
+  signOut: () => void;
   signIn: (body: { email: string; password: string }) => Promise<{
-    isSuccess: boolean
-    err?: AxiosError
+    isSuccess: boolean;
+    err?: AxiosError;
     data: {
-      accessToken: string
-      userId: number
-    } | null
-  }>
+      accessToken: string;
+      userId: number;
+    } | null;
+  }>;
   signUp: (body: {
-    email: string
-    password: string
-    nickname: string
+    email: string;
+    password: string;
+    nickname: string;
   }) => Promise<{
-    isSuccess: boolean
-    err?: AxiosError
+    isSuccess: boolean;
+    err?: AxiosError;
     data: {
-      accessToken: string
-      userId: number
-    } | null
-  }>
+      accessToken: string;
+      userId: number;
+    } | null;
+  }>;
   refreshAccessToken: () => Promise<{
-    accessToken: string | null
-    userId: number | null
-  }>
-}
+    accessToken: string | null;
+    userId: number | null;
+  }>;
+};
 
 export const useAuthStore = create(
   persist<AuthStateType>(
@@ -44,16 +44,16 @@ export const useAuthStore = create(
       userId: null,
 
       getIsLogin: () => {
-        return !!get().userId && !!get().accessToken
+        return !!get().userId && !!get().accessToken;
       },
 
       signOut: () => {
-        axios.post('/api/auth/sign-out')
-        return
+        axios.post("/api/auth/sign-out");
+        return;
       },
       signIn: async (body: { email: string; password: string }) => {
         try {
-          const signInResponse = await signIn(body)
+          const signInResponse = await signIn(body);
 
           const response = {
             isSuccess: true,
@@ -61,125 +61,125 @@ export const useAuthStore = create(
               accessToken: signInResponse.accessToken,
               userId: signInResponse.userId,
             },
-          }
+          };
 
-          set(response.data)
-          return response
+          set(response.data);
+          return response;
         } catch (err) {
           if (axios.isAxiosError(err)) {
             const response = {
               isSuccess: false,
               data: null,
               err: err.response?.data,
-            }
-            return response
+            };
+            return response;
           }
 
           return {
             isSuccess: false,
             data: null,
-          }
+          };
         }
       },
 
       signUp: async (body: {
-        email: string
-        password: string
-        nickname: string
+        email: string;
+        password: string;
+        nickname: string;
       }) => {
         try {
-          const res = await signUp(body)
+          const res = await signUp(body);
           const response = {
             isSuccess: true,
             data: {
               accessToken: res.accessToken,
               userId: res.userId,
             },
-          }
-          set(response.data)
-          return response
+          };
+          set(response.data);
+          return response;
         } catch (err) {
           if (axios.isAxiosError(err)) {
             const response = {
               isSuccess: false,
               data: null,
               err: err.response?.data,
-            }
-            return response
+            };
+            return response;
           }
 
           return {
             isSuccess: false,
             data: null,
-          }
+          };
         }
       },
 
       refreshAccessToken: async () => {
         try {
-          const res = await getAccessToken()
+          const res = await getAccessToken();
 
           if (!res.accessToken) {
             const response = {
               accessToken: null,
               userId: null,
-            }
-            set(response)
-            return response
+            };
+            set(response);
+            return response;
           }
           const response = {
             accessToken: res.accessToken,
             userId: res.userId,
-          }
-          set(response)
-          return response
+          };
+          set(response);
+          return response;
         } catch (err) {
           const response = {
             accessToken: null,
             userId: null,
-          }
-          set(response)
-          return response
+          };
+          set(response);
+          return response;
         }
       },
     }),
     {
-      name: 'authStore',
+      name: "authStore",
     }
   )
-)
+);
 
 async function signIn(body: { email: string; password: string }) {
   return axios
     .post<{ data: { accessToken: string; userId: number } }>(
-      '/api/auth/sign-in',
+      "/api/auth/sign-in",
       body,
       {
         withCredentials: true,
       }
     )
-    .then(v => v.data.data)
+    .then((v) => v.data.data);
 }
 
 async function getAccessToken() {
   return axios
     .put<{ data: { accessToken: string; userId: number } }>(
-      '/api/auth/refresh-token'
+      "/api/auth/refresh-token"
     )
-    .then(v => {
-      return v.data.data
-    })
+    .then((v) => {
+      return v.data.data;
+    });
 }
 
 async function signUp(body: {
-  email: string
-  password: string
-  nickname: string
+  email: string;
+  password: string;
+  nickname: string;
 }) {
   return axios
     .post<{ data: { accessToken: string; userId: number } }>(
-      '/api/auth/sign-up',
+      "/api/auth/sign-up",
       body
     )
-    .then(v => v.data.data)
+    .then((v) => v.data.data);
 }
