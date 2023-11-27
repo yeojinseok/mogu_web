@@ -1,27 +1,33 @@
-import { axiosInstance } from '@/axios/axiosInstance'
 import axios from 'axios'
 import { redirect } from 'next/navigation'
 import { NextRequest, NextResponse } from 'next/server'
 
+import { cookies } from 'next/headers'
+
 export async function PUT(req: NextRequest) {
   const refreshToken = req.cookies.get('refreshToken')
 
+  if (!refreshToken) {
+    req.cookies.delete('refreshToken')
+    redirect('/')
+  }
+
   try {
-    const res = await axiosInstance
+    const res = await axios
       .put<{
         data: { accessToken: string; refreshToken: string; userId: number }
-      }>('/authentication/refresh', {
+      }>(`${process.env.NEXT_PUBLIC_API}/authentication/refresh`, {
         headers: {
-          Cookie: `refreshToken=${refreshToken?.value}`,
+          Authorization: `Bearer ${refreshToken.value}`,
+          'Content-Type': 'application/json',
         },
       })
       .then(v => v)
 
     return NextResponse.json(res.data)
   } catch (err) {
-    if (axios.isAxiosError(err)) {
-    }
-    req.cookies.delete('refreshToken')
+    //@ts-ignore
+    cookies().delete('refreshToken')
     redirect('/')
   }
 }

@@ -81,6 +81,7 @@ module.exports = {
         800: '#2B2B2B',
         900: '#121212',
       },
+      error: '#FC5555',
       focus_green: '#2CAE21',
       bright_blue: '#53A1E9',
       dark_navy: '#0E0736',

@@ -23,8 +23,7 @@ export default async function SignIn(props: {
         <Link
           className="flex w-full p-16 border rounded-8 border-1 title_body border-grey-300"
           href={{
-            pathname: '/auth/sign-in/email',
-            query: props.searchParams,
+            pathname: '/auth/email',
           }}
         >
           <Image

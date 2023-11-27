@@ -30,3 +30,29 @@ export const Button = React.forwardRef<HTMLButtonElement, CustomButtonProps>(
     )
   }
 )
+
+export const StickyButton = React.forwardRef<
+  HTMLButtonElement,
+  CustomButtonProps
+>(function StickyButton(props, ref) {
+  const handleClick = useCallback(
+    debounce((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      props.onClick?.(e)
+    }, 100), // 1000ms 디바운스 시간
+    [props.onClick]
+  )
+
+  return (
+    <div>
+      <div className="h-90 ">
+        <div className="fixed bottom-0 left-0 flex justify-center w-full p-16">
+          <div className="w-full max-w-screen-tablet">
+            <ButtonStyled {...props} ref={ref} onClick={handleClick}>
+              {props.children}
+            </ButtonStyled>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+})
