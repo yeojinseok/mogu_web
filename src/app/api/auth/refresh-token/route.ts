@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { NextRequest, NextResponse } from 'next/server'
 
 import { cookies } from 'next/headers'
+import { axiosInstance } from '@/axios/axiosInstance'
 
 export async function PUT(req: NextRequest) {
   const refreshToken = req.cookies.get('refreshToken')
@@ -16,12 +17,16 @@ export async function PUT(req: NextRequest) {
     const res = await axios
       .put<{
         data: { accessToken: string; refreshToken: string; userId: number }
-      }>(`${process.env.NEXT_PUBLIC_API}/authentication/refresh`, {
-        headers: {
-          Authorization: `Bearer ${refreshToken.value}`,
-          'Content-Type': 'application/json',
-        },
-      })
+      }>(
+        `${process.env.NEXT_PUBLIC_API}/authentication/refresh`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${refreshToken.value}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      )
       .then(v => v)
 
     return NextResponse.json(res.data)

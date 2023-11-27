@@ -13,5 +13,5 @@ export default function Initializer() {
     resetSettlementStateList()
     resetSettlementInfo()
   }, [])
-  return null
+  return <></>
 }

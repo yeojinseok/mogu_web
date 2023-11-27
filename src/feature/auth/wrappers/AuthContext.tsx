@@ -29,9 +29,9 @@ export default function AuthContext({
     return () => setIsInitialized(false)
   }, [])
 
-  // if (!isInitialized) {
-  //   return <div>loading....</div>
-  // }
+  if (!isInitialized) {
+    return <div>loading....</div>
+  }
 
   return <>{children}</>
 }
