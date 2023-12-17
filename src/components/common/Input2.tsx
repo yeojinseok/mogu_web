@@ -11,7 +11,7 @@ const LargeInputStyled = styled.input`
   ${tw`w-full pt-16 pb-8 border-b-1 title_screen h-62 border-grey-200 outline-0 focus:border-focus_green focus:border-b-2 disabled:bg-white`}
 `
 const SmallInputStyled = styled.input`
-  ${tw`h-24 title_body outline-0 disabled:bg-white`}
+  ${tw`w-full h-24 text-left title_body outline-0 border-grey-200 focus:border-focus_green focus:border-b-2 disabled:bg-white`}
 `
 const InputStyled = styled.input`
   ${tw`w-full pt-16 pb-8 border-b-1 title_subsection h-62 border-grey-200 outline-0 focus:border-focus_green focus:border-b-2 disabled:bg-white`}

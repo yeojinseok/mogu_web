@@ -11,6 +11,10 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.369.0",
     "@aws-sdk/s3-request-presigner": "^3.369.0",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.0",
+    "@mui/material": "^5.15.0",
     "@sanity/image-url": "^1.0.2",
     "@suspensive/react": "^1.15.2",
     "@suspensive/react-query": "^1.15.2",

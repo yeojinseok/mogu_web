@@ -19,7 +19,8 @@ import { useEffect } from 'react'
 import { addComma } from '@/utils/helper'
 import { generateSecureID } from '@/utils/generateSecureID'
 import { SETTLEMENT_STATE_LIST } from '@/consts/data'
-
+import { HStack, VStack } from '@/components/common/Stack'
+import CancelOutlined from '@mui/icons-material/CancelOutlined'
 export default function StageSettingSection() {
   return (
     <>
@@ -201,84 +202,107 @@ function FriendItem({ id }: { id: number }) {
   return (
     <div className="h-stack">
       <div className="justify-between w-full h-stack">
-        <div className="items-center h-stack gap-23 ">
-          <Input2
-            value={friend.name}
-            onChange={e =>
-              setFriend(prev => ({ ...prev, name: e.target.value }))
-            }
-            className="text-center w-63"
-            inputSize="sm"
-            placeholder="이름"
-          />
-
-          <div className="flex items-center justify-between w-104">
-            {friend.settlementType === 'PERCENT' ? (
+        <VStack className="w-full gap-4 ">
+          <HStack className="justify-between w-full">
+            <HStack className="w-2/3 ">
               <Input2
-                value={friend.percentage ?? 0}
+                value={friend.name}
+                onChange={e =>
+                  setFriend(prev => ({ ...prev, name: e.target.value }))
+                }
+                className="text-center w-63"
+                inputSize="sm"
+                placeholder="이름"
+              />
+            </HStack>
+            <button
+              className="p-2"
+              onClick={() => {
+                setFriends(prev => prev.filter(v => v.id !== friend.id))
+              }}
+            >
+              <CancelOutlined />
+            </button>
+          </HStack>
+          <HStack className="justify-between w-full">
+            <div className="items-center h-stack gap-23 ">
+              <div className="flex items-center justify-between w-104">
+                <MoguSelect
+                  options={SETTLEMENT_STATE_LIST}
+                  renderInput={handleSelect =>
+                    friend.settlementType === 'PERCENT' ? (
+                      <Input2
+                        value={friend.percentage ?? 0}
+                        onChange={e => {
+                          const { value } = e.target
+
+                          if (isNaN(Number(value))) {
+                            return
+                          }
+
+                          const percent = clamp(
+                            Number(value),
+                            0,
+                            remainingPercent
+                          )
+
+                          setFriend(prev => ({
+                            ...prev,
+                            percentage: percent,
+                            price: (특정금액_빼고_남은_금액 * percent) / 100,
+                          }))
+                        }}
+                        className="text-center w-63"
+                        inputSize="sm"
+                        placeholder="% 입력"
+                      />
+                    ) : (
+                      <div
+                        onClick={handleSelect}
+                        css={
+                          friend.settlementType ? undefined : tw`text-grey-100`
+                        }
+                        className=" title_body"
+                      >
+                        {SETTLEMENT_STATE_LIST.find(
+                          v => v.value === friend.settlementType
+                        )?.label ?? '타입선택'}
+                      </div>
+                    )
+                  }
+                  onChange={v =>
+                    setFriend(prev => ({ ...prev, settlementType: v }))
+                  }
+                />
+              </div>
+            </div>
+            <div className="items-center h-stack">
+              <Input2
+                disabled={friend.settlementType !== 'SPECIFIC_PRICE'}
+                value={addComma(friend.price)}
                 onChange={e => {
                   const { value } = e.target
+                  const price = value.replaceAll(',', '').replace('원', '')
 
-                  if (isNaN(Number(value))) {
+                  if (!Number(price) && value !== '') {
                     return
                   }
 
-                  const percent = clamp(Number(value), 0, remainingPercent)
-
                   setFriend(prev => ({
                     ...prev,
-                    percentage: percent,
-                    price: (특정금액_빼고_남은_금액 * percent) / 100,
+                    price: clamp(Number(price), 0, 특정금액_빼고_남은_금액),
                   }))
                 }}
                 className="text-center w-63"
                 inputSize="sm"
-                placeholder="% 입력"
+                style={{
+                  textAlign: 'right',
+                }}
               />
-            ) : (
-              <div
-                css={friend.settlementType ? undefined : tw`text-grey-100`}
-                className=" title_body"
-              >
-                {SETTLEMENT_STATE_LIST.find(
-                  v => v.value === friend.settlementType
-                )?.label ?? '타입선택'}
-              </div>
-            )}
-
-            <MoguSelect
-              options={SETTLEMENT_STATE_LIST}
-              onChange={v =>
-                setFriend(prev => ({ ...prev, settlementType: v }))
-              }
-            />
-          </div>
-        </div>
-        <div className="items-center h-stack">
-          <Input2
-            disabled={friend.settlementType !== 'SPECIFIC_PRICE'}
-            value={addComma(friend.price)}
-            onChange={e => {
-              const { value } = e.target
-              const price = value.replaceAll(',', '').replace('원', '')
-
-              if (!Number(price) && value !== '') {
-                return
-              }
-
-              setFriend(prev => ({
-                ...prev,
-                price: clamp(Number(price), 0, 특정금액_빼고_남은_금액),
-              }))
-            }}
-            className="text-center w-63"
-            inputSize="sm"
-            style={{
-              textAlign: 'right',
-            }}
-          />
-          <div className=" title_body">원</div>
-        </div>
+              <div className=" title_body">원</div>
+            </div>
+          </HStack>
+        </VStack>
       </div>
     </div>
   )
