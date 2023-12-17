@@ -6,6 +6,4 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function POST(request: NextRequest) {
   //@ts-ignore
   cookies().delete('refreshToken')
-
-  redirect('/auth/email')
 }

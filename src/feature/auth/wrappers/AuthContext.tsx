@@ -11,8 +11,6 @@ export default function AuthContext({
   const path = usePathname()
   const navigate = useRouter()
 
-  const isProtectedPage = path.includes('protected') || path === '/'
-
   const initialize = useAuthStore(state => state.refreshAccessToken)
 
   const [isInitialized, setIsInitialized] = React.useState(false)
@@ -21,7 +19,7 @@ export default function AuthContext({
     initialize().then(response => {
       setIsInitialized(true)
 
-      if (isProtectedPage && (!response.accessToken || !response.userId)) {
+      if (!response.accessToken || !response.userId) {
         navigate.replace('/auth/sign-in')
       }
     })
@@ -30,7 +28,7 @@ export default function AuthContext({
   }, [])
 
   if (!isInitialized) {
-    return <div>loading....</div>
+    return <div>loading...</div>
   }
 
   return <>{children}</>

@@ -49,7 +49,14 @@ export const useAuthStore = create(
 
       signOut: () => {
         axios.post('/api/auth/sign-out')
-        return
+        set({ accessToken: null, userId: null })
+
+        if (window) {
+          window.location.href = '/auth/sign-in'
+          return
+        }
+
+        redirect('/auth/sign-in')
       },
       signIn: async (body: { email: string; password: string }) => {
         try {
@@ -117,8 +124,8 @@ export const useAuthStore = create(
 
       refreshAccessToken: async () => {
         try {
+          console.log('?!??!')
           const res = await getAccessToken()
-          console.log(res)
           if (!res.accessToken) {
             const response = {
               accessToken: null,
